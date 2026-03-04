@@ -16,6 +16,8 @@ import (
 	authservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/service"
 	cmdbhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/cmdb/handler"
 	cmdbservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/cmdb/service"
+	k8shandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/k8s/handler"
+	k8sservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/k8s/service"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/config"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/crypto"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/database"
@@ -55,6 +57,8 @@ func main() {
 	aes := crypto.NewAESGCM(cfg.JWT.Secret)
 	cmdbServices := cmdbservice.New(db, aes)
 	cmdbHandlers := cmdbhandler.New(cmdbServices)
+	k8sServices := k8sservice.New(db, aes)
+	k8sHandlers := k8shandler.New(k8sServices)
 
 	jwtMiddleware := middleware.JWTAuth(jwtManager, authServices.Auth)
 	permissionMiddleware := middleware.Permission
@@ -77,6 +81,7 @@ func main() {
 	authHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
 	cmdbHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
 	cmdbHandlers.RegisterWSRoutes(r, jwtMiddleware)
+	k8sHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
 
 	server := &http.Server{
 		Addr:         fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port),

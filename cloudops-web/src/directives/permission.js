@@ -3,7 +3,7 @@ function check(el, binding) {
     const userStore = useUserStore();
     const required = binding.value;
     const list = userStore.permissions || [];
-    if (!required || list.includes('*:*:*') || list.includes('system:*:*') || list.includes('cmdb:*:*')) {
+    if (!required || list.includes('*:*:*') || list.includes('system:*:*') || list.includes('cmdb:*:*') || list.includes('k8s:*:*')) {
         return;
     }
     const has = Array.isArray(required) ? required.some((p) => list.includes(p)) : list.includes(required);

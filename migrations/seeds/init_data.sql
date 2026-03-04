@@ -68,7 +68,45 @@ VALUES
 
     (141, 14, '新增部门', '', '', '', 141, 'button', 'system:department:create'),
     (142, 14, '编辑部门', '', '', '', 142, 'button', 'system:department:update'),
-    (143, 14, '删除部门', '', '', '', 143, 'button', 'system:department:delete')
+    (143, 14, '删除部门', '', '', '', 143, 'button', 'system:department:delete'),
+
+    (30, 0, 'K8s容器管理', '/k8s', '', 'Grid', 30, 'dir', ''),
+    (31, 30, '集群管理', '/k8s/cluster', 'views/k8s/cluster/index.vue', 'Cpu', 31, 'menu', 'k8s:cluster:list'),
+    (32, 30, '节点管理', '/k8s/node', 'views/k8s/node/index.vue', 'Monitor', 32, 'menu', 'k8s:node:list'),
+    (33, 30, '命名空间', '/k8s/namespace', 'views/k8s/namespace/index.vue', 'Collection', 33, 'menu', 'k8s:namespace:list'),
+    (34, 30, '工作负载-Deployment', '/k8s/workload/deployment', 'views/k8s/workload/deployment.vue', 'SetUp', 34, 'menu', 'k8s:workload:deployment:list'),
+    (35, 30, '工作负载-Pod', '/k8s/workload/pod', 'views/k8s/workload/pod.vue', 'Memo', 35, 'menu', 'k8s:workload:pod:list'),
+    (36, 30, '网络-Service', '/k8s/network/service', 'views/k8s/network/service.vue', 'Share', 36, 'menu', 'k8s:network:service:list'),
+    (37, 30, '网络-Ingress', '/k8s/network/ingress', 'views/k8s/network/ingress.vue', 'Connection', 37, 'menu', 'k8s:network:ingress:list'),
+    (38, 30, '配置-ConfigMap', '/k8s/config/configmap', 'views/k8s/config/configmap.vue', 'Document', 38, 'menu', 'k8s:config:configmap:list'),
+    (39, 30, '配置-Secret', '/k8s/config/secret', 'views/k8s/config/secret.vue', 'Key', 39, 'menu', 'k8s:config:secret:list'),
+
+    (311, 31, '新增集群', '', '', '', 311, 'button', 'k8s:cluster:create'),
+    (312, 31, '集群详情', '', '', '', 312, 'button', 'k8s:cluster:detail'),
+    (313, 31, '编辑集群', '', '', '', 313, 'button', 'k8s:cluster:update'),
+    (314, 31, '删除集群', '', '', '', 314, 'button', 'k8s:cluster:delete'),
+    (315, 31, '连接测试', '', '', '', 315, 'button', 'k8s:cluster:test'),
+
+    (321, 32, '封锁节点', '', '', '', 321, 'button', 'k8s:node:cordon'),
+    (322, 32, '解封节点', '', '', '', 322, 'button', 'k8s:node:uncordon'),
+    (323, 32, '排水节点', '', '', '', 323, 'button', 'k8s:node:drain'),
+
+    (341, 34, '创建Deployment', '', '', '', 341, 'button', 'k8s:workload:deployment:create'),
+    (342, 34, '查看Deployment详情', '', '', '', 342, 'button', 'k8s:workload:deployment:detail'),
+    (343, 34, '更新Deployment', '', '', '', 343, 'button', 'k8s:workload:deployment:update'),
+    (344, 34, '删除Deployment', '', '', '', 344, 'button', 'k8s:workload:deployment:delete'),
+    (345, 34, '伸缩Deployment', '', '', '', 345, 'button', 'k8s:workload:deployment:scale'),
+    (346, 34, '重启Deployment', '', '', '', 346, 'button', 'k8s:workload:deployment:restart'),
+
+    (351, 35, 'Pod详情', '', '', '', 351, 'button', 'k8s:workload:pod:detail'),
+    (352, 35, 'Pod日志', '', '', '', 352, 'button', 'k8s:workload:pod:log'),
+    (353, 35, '删除Pod', '', '', '', 353, 'button', 'k8s:workload:pod:delete'),
+
+    (381, 38, '保存ConfigMap', '', '', '', 381, 'button', 'k8s:config:configmap:save'),
+    (382, 38, '删除ConfigMap', '', '', '', 382, 'button', 'k8s:config:configmap:delete'),
+
+    (391, 39, '保存Secret', '', '', '', 391, 'button', 'k8s:config:secret:save'),
+    (392, 39, '删除Secret', '', '', '', 392, 'button', 'k8s:config:secret:delete')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO sys_user_roles (id, user_id, role_id)

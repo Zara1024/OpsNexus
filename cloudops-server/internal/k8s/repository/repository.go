@@ -1,4 +1,15 @@
 package repository
 
-// Repository 定义k8s模块repository层空结构。
-type Repository struct{}
+import "gorm.io/gorm"
+
+// Repositories 聚合k8s模块仓储。
+type Repositories struct {
+	Cluster *ClusterRepository
+}
+
+// New 创建仓储集合。
+func New(db *gorm.DB) *Repositories {
+	return &Repositories{
+		Cluster: NewClusterRepository(db),
+	}
+}

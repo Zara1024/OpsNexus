@@ -67,6 +67,60 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/cmdb/terminal/index.vue'),
         meta: { title: 'Web终端', permission: 'cmdb:host:terminal' },
       },
+      {
+        path: 'k8s/cluster',
+        name: 'K8sCluster',
+        component: () => import('@/views/k8s/cluster/index.vue'),
+        meta: { title: 'K8s集群', permission: 'k8s:cluster:list' },
+      },
+      {
+        path: 'k8s/node',
+        name: 'K8sNode',
+        component: () => import('@/views/k8s/node/index.vue'),
+        meta: { title: 'K8s节点', permission: 'k8s:node:list' },
+      },
+      {
+        path: 'k8s/namespace',
+        name: 'K8sNamespace',
+        component: () => import('@/views/k8s/namespace/index.vue'),
+        meta: { title: '命名空间', permission: 'k8s:namespace:list' },
+      },
+      {
+        path: 'k8s/workload/deployment',
+        name: 'K8sWorkloadDeployment',
+        component: () => import('@/views/k8s/workload/deployment.vue'),
+        meta: { title: 'Deployment', permission: 'k8s:workload:deployment:list' },
+      },
+      {
+        path: 'k8s/workload/pod',
+        name: 'K8sWorkloadPod',
+        component: () => import('@/views/k8s/workload/pod.vue'),
+        meta: { title: 'Pod管理', permission: 'k8s:workload:pod:list' },
+      },
+      {
+        path: 'k8s/network/service',
+        name: 'K8sNetworkService',
+        component: () => import('@/views/k8s/network/service.vue'),
+        meta: { title: 'Service', permission: 'k8s:network:service:list' },
+      },
+      {
+        path: 'k8s/network/ingress',
+        name: 'K8sNetworkIngress',
+        component: () => import('@/views/k8s/network/ingress.vue'),
+        meta: { title: 'Ingress', permission: 'k8s:network:ingress:list' },
+      },
+      {
+        path: 'k8s/config/configmap',
+        name: 'K8sConfigMap',
+        component: () => import('@/views/k8s/config/configmap.vue'),
+        meta: { title: 'ConfigMap', permission: 'k8s:config:configmap:list' },
+      },
+      {
+        path: 'k8s/config/secret',
+        name: 'K8sSecret',
+        component: () => import('@/views/k8s/config/secret.vue'),
+        meta: { title: 'Secret', permission: 'k8s:config:secret:list' },
+      },
     ],
   },
 ]
@@ -105,7 +159,7 @@ router.beforeEach(async (to, _from, next) => {
 
   const needPermission = to.meta.permission as string | undefined
   const permissionList = userStore.permissions || []
-  const hasGlobalPermission = permissionList.includes('*:*:*') || permissionList.includes('system:*:*') || permissionList.includes('cmdb:*:*')
+  const hasGlobalPermission = permissionList.includes('*:*:*') || permissionList.includes('system:*:*') || permissionList.includes('cmdb:*:*') || permissionList.includes('k8s:*:*')
   if (needPermission && !hasGlobalPermission && !permissionList.includes(needPermission)) {
     next('/dashboard')
     return

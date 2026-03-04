@@ -1,4 +1,4 @@
 package model
 
-// Model 定义k8s模块model层空结构。
+// Model 保留模块入口占位。
 type Model struct{}

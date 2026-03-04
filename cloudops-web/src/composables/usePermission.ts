@@ -9,7 +9,7 @@ export function usePermission() {
 
   const hasPermission = (permission: string | string[]) => {
     const current = permissions.value
-    if (!permission || current.includes('*:*:*') || current.includes('system:*:*') || current.includes('cmdb:*:*')) {
+    if (!permission || current.includes('*:*:*') || current.includes('system:*:*') || current.includes('cmdb:*:*') || current.includes('k8s:*:*')) {
       return true
     }
 

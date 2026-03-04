@@ -6,7 +6,7 @@ export function usePermission() {
     const permissions = computed(() => userStore.permissions || []);
     const hasPermission = (permission) => {
         const current = permissions.value;
-        if (!permission || current.includes('*:*:*') || current.includes('system:*:*') || current.includes('cmdb:*:*')) {
+        if (!permission || current.includes('*:*:*') || current.includes('system:*:*') || current.includes('cmdb:*:*') || current.includes('k8s:*:*')) {
             return true;
         }
         if (Array.isArray(permission)) {
