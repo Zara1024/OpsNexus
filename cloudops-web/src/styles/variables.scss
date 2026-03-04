@@ -1,0 +1,16 @@
+:root {
+  --color-bg-primary: #0b1020;
+  --color-bg-secondary: #151b35;
+  --color-accent-start: #1a1d4d;
+  --color-accent-mid: #667eea;
+  --color-accent-end: #764ba2;
+  --color-text-primary: #f5f7ff;
+  --color-text-secondary: #b9c1e8;
+  --radius-md: 12px;
+}
+
+body {
+  background: radial-gradient(circle at top right, var(--color-accent-end), var(--color-bg-primary) 45%);
+  color: var(--color-text-primary);
+  font-family: 'Source Han Sans SC', 'Inter', sans-serif;
+}

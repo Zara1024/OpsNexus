@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS sys_menus (
+    id BIGSERIAL PRIMARY KEY,
+    parent_id BIGINT NOT NULL DEFAULT 0,
+    menu_name VARCHAR(64) NOT NULL,
+    route_path VARCHAR(128) NOT NULL DEFAULT '',
+    component VARCHAR(128) NOT NULL DEFAULT '',
+    icon VARCHAR(64) NOT NULL DEFAULT '',
+    sort_order INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    deleted_at TIMESTAMPTZ
+);
