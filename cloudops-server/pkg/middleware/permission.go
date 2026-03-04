@@ -29,7 +29,7 @@ func Permission(permission string) gin.HandlerFunc {
 
 func hasPermission(permissionList []string, need string) bool {
 	for _, p := range permissionList {
-		if p == "*:*:*" || p == "system:*:*" || p == need {
+		if p == "*:*:*" || p == "system:*:*" || p == "cmdb:*:*" || p == need {
 			return true
 		}
 	}

@@ -28,6 +28,29 @@ VALUES
     (13, 10, '菜单管理', '/system/menu', 'views/system/menu/index.vue', 'Menu', 13, 'menu', 'system:menu:list'),
     (14, 10, '部门管理', '/system/department', 'views/system/department/index.vue', 'OfficeBuilding', 14, 'menu', 'system:department:list'),
 
+    (20, 0, 'CMDB资产', '/cmdb', '', 'Cpu', 20, 'dir', ''),
+    (21, 20, '主机管理', '/cmdb/host', 'views/cmdb/host/index.vue', 'Monitor', 21, 'menu', 'cmdb:host:list'),
+    (22, 20, '分组管理', '/cmdb/group', 'views/cmdb/group/index.vue', 'Collection', 22, 'menu', 'cmdb:group:list'),
+    (23, 20, '凭据管理', '/cmdb/credential', 'views/cmdb/credential/index.vue', 'Key', 23, 'menu', 'cmdb:credential:list'),
+    (24, 20, 'Web终端', '/cmdb/terminal', 'views/cmdb/terminal/index.vue', 'Connection', 24, 'menu', 'cmdb:host:terminal'),
+    (25, 20, 'SSH审计', '/cmdb/terminal', 'views/cmdb/terminal/index.vue', 'Document', 25, 'menu', 'cmdb:ssh_record:list'),
+
+    (211, 21, '新增主机', '', '', '', 211, 'button', 'cmdb:host:create'),
+    (212, 21, '编辑主机', '', '', '', 212, 'button', 'cmdb:host:update'),
+    (213, 21, '删除主机', '', '', '', 213, 'button', 'cmdb:host:delete'),
+    (214, 21, '主机详情', '', '', '', 214, 'button', 'cmdb:host:detail'),
+    (215, 21, 'SSH测试', '', '', '', 215, 'button', 'cmdb:host:test'),
+    (216, 21, '批量操作', '', '', '', 216, 'button', 'cmdb:host:batch'),
+    (217, 21, '打开终端', '', '', '', 217, 'button', 'cmdb:host:terminal'),
+
+    (221, 22, '新增分组', '', '', '', 221, 'button', 'cmdb:group:create'),
+    (222, 22, '编辑分组', '', '', '', 222, 'button', 'cmdb:group:update'),
+    (223, 22, '删除分组', '', '', '', 223, 'button', 'cmdb:group:delete'),
+
+    (231, 23, '新增凭据', '', '', '', 231, 'button', 'cmdb:credential:create'),
+    (232, 23, '编辑凭据', '', '', '', 232, 'button', 'cmdb:credential:update'),
+    (233, 23, '删除凭据', '', '', '', 233, 'button', 'cmdb:credential:delete'),
+
     (111, 11, '新增用户', '', '', '', 111, 'button', 'system:user:create'),
     (112, 11, '编辑用户', '', '', '', 112, 'button', 'system:user:update'),
     (113, 11, '删除用户', '', '', '', 113, 'button', 'system:user:delete'),

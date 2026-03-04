@@ -6,7 +6,7 @@ function check(el: HTMLElement, binding: DirectiveBinding<string | string[]>) {
   const required = binding.value
   const list = userStore.permissions || []
 
-  if (!required || list.includes('*:*:*') || list.includes('system:*:*')) {
+  if (!required || list.includes('*:*:*') || list.includes('system:*:*') || list.includes('cmdb:*:*')) {
     return
   }
 

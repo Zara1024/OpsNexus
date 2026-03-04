@@ -25,6 +25,9 @@ func JWTAuth(jwtMgr *jwtx.Manager, authSvc *service.AuthService) gin.HandlerFunc
 	return func(c *gin.Context) {
 		token := extractBearerToken(c.GetHeader("Authorization"))
 		if token == "" {
+			token = strings.TrimSpace(c.Query("token"))
+		}
+		if token == "" {
 			response.Error(c, http.StatusUnauthorized, apperrors.ErrUnauthorized.Code, apperrors.ErrUnauthorized.Message)
 			c.Abort()
 			return

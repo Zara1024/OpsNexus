@@ -1,0 +1,17 @@
+import request from '@/utils/request';
+export const listCMDBHostsApi = (params) => request.get('/v1/cmdb/hosts', { params });
+export const getCMDBHostApi = (id) => request.get(`/v1/cmdb/hosts/${id}`);
+export const createCMDBHostApi = (data) => request.post('/v1/cmdb/hosts', data);
+export const updateCMDBHostApi = (id, data) => request.put(`/v1/cmdb/hosts/${id}`, data);
+export const deleteCMDBHostApi = (id) => request.delete(`/v1/cmdb/hosts/${id}`);
+export const testCMDBHostSSHApi = (id) => request.post(`/v1/cmdb/hosts/${id}/test`);
+export const batchCMDBHostsApi = (data) => request.post('/v1/cmdb/hosts/batch', data);
+export const listCMDBGroupsApi = () => request.get('/v1/cmdb/groups');
+export const createCMDBGroupApi = (data) => request.post('/v1/cmdb/groups', data);
+export const updateCMDBGroupApi = (id, data) => request.put(`/v1/cmdb/groups/${id}`, data);
+export const deleteCMDBGroupApi = (id) => request.delete(`/v1/cmdb/groups/${id}`);
+export const listCMDBCredentialsApi = () => request.get('/v1/cmdb/credentials');
+export const createCMDBCredentialApi = (data) => request.post('/v1/cmdb/credentials', data);
+export const updateCMDBCredentialApi = (id, data) => request.put(`/v1/cmdb/credentials/${id}`, data);
+export const deleteCMDBCredentialApi = (id) => request.delete(`/v1/cmdb/credentials/${id}`);
+export const listCMDBSSHRecordsApi = (params) => request.get('/v1/cmdb/ssh-records', { params });

@@ -42,6 +42,30 @@ const routes = [
                 component: () => import('@/views/system/department/index.vue'),
                 meta: { title: '部门管理', permission: 'system:department:list' },
             },
+            {
+                path: 'cmdb/host',
+                name: 'CMDBHost',
+                component: () => import('@/views/cmdb/host/index.vue'),
+                meta: { title: '主机管理', permission: 'cmdb:host:list' },
+            },
+            {
+                path: 'cmdb/group',
+                name: 'CMDBGroup',
+                component: () => import('@/views/cmdb/group/index.vue'),
+                meta: { title: '分组管理', permission: 'cmdb:group:list' },
+            },
+            {
+                path: 'cmdb/credential',
+                name: 'CMDBCredential',
+                component: () => import('@/views/cmdb/credential/index.vue'),
+                meta: { title: '凭据管理', permission: 'cmdb:credential:list' },
+            },
+            {
+                path: 'cmdb/terminal',
+                name: 'CMDBTerminal',
+                component: () => import('@/views/cmdb/terminal/index.vue'),
+                meta: { title: 'Web终端', permission: 'cmdb:host:terminal' },
+            },
         ],
     },
 ];
@@ -74,7 +98,9 @@ router.beforeEach(async (to, _from, next) => {
         }
     }
     const needPermission = to.meta.permission;
-    if (needPermission && !userStore.permissions.includes(needPermission) && !userStore.permissions.includes('*:*:*')) {
+    const permissionList = userStore.permissions || [];
+    const hasGlobalPermission = permissionList.includes('*:*:*') || permissionList.includes('system:*:*') || permissionList.includes('cmdb:*:*');
+    if (needPermission && !hasGlobalPermission && !permissionList.includes(needPermission)) {
         next('/dashboard');
         return;
     }
