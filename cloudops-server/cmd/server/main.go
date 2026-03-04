@@ -12,8 +12,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	authhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/handler"
+	authservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/service"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/config"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/database"
+	jwtx "github.com/Zara1024/OpsNexus/cloudops-server/pkg/jwt"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/logger"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/middleware"
 	redisx "github.com/Zara1024/OpsNexus/cloudops-server/pkg/redis"
@@ -42,6 +45,10 @@ func main() {
 	}
 	defer redisClient.Close()
 
+	jwtManager := jwtx.NewManager(cfg.JWT.Secret, cfg.JWT.Issuer, 30*time.Minute, 7*24*time.Hour)
+	authServices := authservice.New(db, redisClient, jwtManager)
+	authHandlers := authhandler.New(authServices)
+
 	r := gin.New()
 	r.Use(middleware.RequestID())
 	r.Use(middleware.RequestLogger(log))
@@ -55,7 +62,13 @@ func main() {
 		})
 	})
 
-	_ = db
+	v1 := r.Group("/api/v1")
+	authHandlers.RegisterRoutes(
+		v1,
+		middleware.JWTAuth(jwtManager, authServices.Auth),
+		middleware.Permission,
+		middleware.Audit(log),
+	)
 
 	server := &http.Server{
 		Addr:         fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port),

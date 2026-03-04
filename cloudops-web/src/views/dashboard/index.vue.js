@@ -1,3 +1,5 @@
+import { useUserStore } from '@/stores/user';
+const userStore = useUserStore();
 debugger; /* PartiallyEnd: #3632/scriptSetup.vue */
 const __VLS_ctx = {};
 let __VLS_components;
@@ -11,11 +13,16 @@ var __VLS_4 = {};
 __VLS_3.slots.default;
 __VLS_asFunctionalElement(__VLS_intrinsicElements.h2, __VLS_intrinsicElements.h2)({});
 __VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({});
+(__VLS_ctx.userStore.userInfo?.nickname || __VLS_ctx.userStore.userInfo?.username);
+__VLS_asFunctionalElement(__VLS_intrinsicElements.p, __VLS_intrinsicElements.p)({});
+(__VLS_ctx.userStore.permissions.length);
 var __VLS_3;
 var __VLS_dollars;
 const __VLS_self = (await import('vue')).defineComponent({
     setup() {
-        return {};
+        return {
+            userStore: userStore,
+        };
     },
 });
 export default (await import('vue')).defineComponent({
