@@ -120,6 +120,42 @@ const routes = [
                 component: () => import('@/views/k8s/config/secret.vue'),
                 meta: { title: 'Secret', permission: 'k8s:config:secret:list' },
             },
+            {
+                path: 'monitor/alert-rule',
+                name: 'MonitorAlertRule',
+                component: () => import('@/views/monitor/alert-rule/index.vue'),
+                meta: { title: '告警规则', permission: 'monitor:rule:list' },
+            },
+            {
+                path: 'monitor/alert',
+                name: 'MonitorAlert',
+                component: () => import('@/views/monitor/alert/index.vue'),
+                meta: { title: '活跃告警', permission: 'monitor:alert:list' },
+            },
+            {
+                path: 'monitor/alert/history',
+                name: 'MonitorAlertHistory',
+                component: () => import('@/views/monitor/alert/history.vue'),
+                meta: { title: '历史告警', permission: 'monitor:alert:history' },
+            },
+            {
+                path: 'monitor/channel',
+                name: 'MonitorChannel',
+                component: () => import('@/views/monitor/channel/index.vue'),
+                meta: { title: '通知渠道', permission: 'monitor:channel:list' },
+            },
+            {
+                path: 'audit/operation',
+                name: 'AuditOperation',
+                component: () => import('@/views/audit/operation/index.vue'),
+                meta: { title: '操作日志', permission: 'audit:log:list' },
+            },
+            {
+                path: 'audit/login',
+                name: 'AuditLogin',
+                component: () => import('@/views/audit/login/index.vue'),
+                meta: { title: '登录日志', permission: 'audit:login:list' },
+            },
         ],
     },
 ];
@@ -153,7 +189,13 @@ router.beforeEach(async (to, _from, next) => {
     }
     const needPermission = to.meta.permission;
     const permissionList = userStore.permissions || [];
-    const hasGlobalPermission = permissionList.includes('*:*:*') || permissionList.includes('system:*:*') || permissionList.includes('cmdb:*:*') || permissionList.includes('k8s:*:*');
+    const hasGlobalPermission = permissionList.includes('*:*:*') ||
+        permissionList.includes('system:*:*') ||
+        permissionList.includes('cmdb:*:*') ||
+        permissionList.includes('k8s:*:*') ||
+        permissionList.includes('monitor:*:*') ||
+        permissionList.includes('audit:*:*') ||
+        permissionList.includes('dashboard:*:*');
     if (needPermission && !hasGlobalPermission && !permissionList.includes(needPermission)) {
         next('/dashboard');
         return;

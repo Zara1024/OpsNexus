@@ -73,7 +73,7 @@ VALUES
     (30, 0, 'K8s容器管理', '/k8s', '', 'Grid', 30, 'dir', ''),
     (31, 30, '集群管理', '/k8s/cluster', 'views/k8s/cluster/index.vue', 'Cpu', 31, 'menu', 'k8s:cluster:list'),
     (32, 30, '节点管理', '/k8s/node', 'views/k8s/node/index.vue', 'Monitor', 32, 'menu', 'k8s:node:list'),
-    (33, 30, '命名空间', '/k8s/namespace', 'views/k8s/namespace/index.vue', 'Collection', 33, 'menu', 'k8s:namespace:list'),
+    (33, 30, '命名空间', '/k8s/namespace', 'views/k8s/cluster/index.vue', 'Collection', 33, 'menu', 'k8s:namespace:list'),
     (34, 30, '工作负载-Deployment', '/k8s/workload/deployment', 'views/k8s/workload/deployment.vue', 'SetUp', 34, 'menu', 'k8s:workload:deployment:list'),
     (35, 30, '工作负载-Pod', '/k8s/workload/pod', 'views/k8s/workload/pod.vue', 'Memo', 35, 'menu', 'k8s:workload:pod:list'),
     (36, 30, '网络-Service', '/k8s/network/service', 'views/k8s/network/service.vue', 'Share', 36, 'menu', 'k8s:network:service:list'),
@@ -106,16 +106,28 @@ VALUES
     (382, 38, '删除ConfigMap', '', '', '', 382, 'button', 'k8s:config:configmap:delete'),
 
     (391, 39, '保存Secret', '', '', '', 391, 'button', 'k8s:config:secret:save'),
-    (392, 39, '删除Secret', '', '', '', 392, 'button', 'k8s:config:secret:delete')
-ON CONFLICT (id) DO NOTHING;
+    (392, 39, '删除Secret', '', '', '', 392, 'button', 'k8s:config:secret:delete'),
 
-INSERT INTO sys_user_roles (id, user_id, role_id)
-VALUES
-    (1, 1, 1)
-ON CONFLICT (id) DO NOTHING;
+    (40, 0, '监控告警', '/monitor', '', 'Bell', 40, 'dir', ''),
+    (41, 40, '告警规则', '/monitor/alert-rule', 'views/monitor/alert-rule/index.vue', 'BellFilled', 41, 'menu', 'monitor:rule:list'),
+    (42, 40, '活跃告警', '/monitor/alert', 'views/monitor/alert/index.vue', 'Warning', 42, 'menu', 'monitor:alert:list'),
+    (43, 40, '历史告警', '/monitor/alert/history', 'views/monitor/alert/history.vue', 'List', 43, 'menu', 'monitor:alert:history'),
+    (44, 40, '通知渠道', '/monitor/channel', 'views/monitor/channel/index.vue', 'Message', 44, 'menu', 'monitor:channel:list'),
 
-INSERT INTO sys_role_menus (id, role_id, menu_id)
-SELECT ROW_NUMBER() OVER () AS id, 1 AS role_id, m.id AS menu_id
-FROM sys_menus m
-WHERE m.deleted_at IS NULL
+    (411, 41, '新增规则', '', '', '', 411, 'button', 'monitor:rule:create'),
+    (412, 41, '编辑规则', '', '', '', 412, 'button', 'monitor:rule:update'),
+    (413, 41, '删除规则', '', '', '', 413, 'button', 'monitor:rule:delete'),
+    (414, 41, '切换规则状态', '', '', '', 414, 'button', 'monitor:rule:toggle'),
+
+    (421, 42, '确认告警', '', '', '', 421, 'button', 'monitor:alert:ack'),
+    (422, 42, '静默告警', '', '', '', 422, 'button', 'monitor:alert:silence'),
+
+    (441, 44, '新增渠道', '', '', '', 441, 'button', 'monitor:channel:create'),
+    (442, 44, '测试渠道', '', '', '', 442, 'button', 'monitor:channel:test'),
+
+    (50, 0, '审计日志', '/audit', '', 'Document', 50, 'dir', ''),
+    (51, 50, '操作日志', '/audit/operation', 'views/audit/operation/index.vue', 'Tickets', 51, 'menu', 'audit:log:list'),
+    (52, 50, '登录日志', '/audit/login', 'views/audit/login/index.vue', 'User', 52, 'menu', 'audit:login:list'),
+
+    (511, 51, '导出日志', '', '', '', 511, 'button', 'audit:log:export')
 ON CONFLICT (id) DO NOTHING;

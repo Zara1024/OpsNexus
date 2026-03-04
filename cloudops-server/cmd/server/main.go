@@ -12,12 +12,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	apphandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/app/handler"
+	appservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/app/service"
+	audithandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/audit/handler"
+	auditservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/audit/service"
 	authhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/handler"
 	authservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/service"
 	cmdbhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/cmdb/handler"
 	cmdbservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/cmdb/service"
 	k8shandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/k8s/handler"
 	k8sservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/k8s/service"
+	monitorhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/monitor/handler"
+	monitorservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/monitor/service"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/config"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/crypto"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/database"
@@ -55,14 +61,20 @@ func main() {
 	authHandlers := authhandler.New(authServices)
 
 	aes := crypto.NewAESGCM(cfg.JWT.Secret)
+	appServices := appservice.New(db)
+	appHandlers := apphandler.New(appServices)
+	auditServices := auditservice.New(db)
+	auditHandlers := audithandler.New(auditServices)
 	cmdbServices := cmdbservice.New(db, aes)
 	cmdbHandlers := cmdbhandler.New(cmdbServices)
 	k8sServices := k8sservice.New(db, aes)
 	k8sHandlers := k8shandler.New(k8sServices)
+	monitorServices := monitorservice.New(db, aes)
+	monitorHandlers := monitorhandler.New(monitorServices)
 
 	jwtMiddleware := middleware.JWTAuth(jwtManager, authServices.Auth)
 	permissionMiddleware := middleware.Permission
-	auditMiddleware := middleware.Audit(log)
+	auditMiddleware := middleware.Audit(log, auditServices.Log.CreateFromRecord)
 
 	r := gin.New()
 	r.Use(middleware.RequestID())
@@ -79,9 +91,12 @@ func main() {
 
 	v1 := r.Group("/api/v1")
 	authHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
+	appHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware)
+	auditHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware)
 	cmdbHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
 	cmdbHandlers.RegisterWSRoutes(r, jwtMiddleware)
 	k8sHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
+	monitorHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
 
 	server := &http.Server{
 		Addr:         fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port),

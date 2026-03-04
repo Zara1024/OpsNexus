@@ -1,0 +1,13 @@
+import request from '@/utils/request';
+export const listAlertRulesApi = () => request.get('/v1/monitor/alert-rules');
+export const createAlertRuleApi = (data) => request.post('/v1/monitor/alert-rules', data);
+export const updateAlertRuleApi = (id, data) => request.put(`/v1/monitor/alert-rules/${id}`, data);
+export const deleteAlertRuleApi = (id) => request.delete(`/v1/monitor/alert-rules/${id}`);
+export const toggleAlertRuleApi = (id, enabled) => request.put(`/v1/monitor/alert-rules/${id}/toggle`, { enabled });
+export const listActiveAlertsApi = () => request.get('/v1/monitor/alerts');
+export const listAlertHistoryApi = () => request.get('/v1/monitor/alerts/history');
+export const ackAlertApi = (id) => request.put(`/v1/monitor/alerts/${id}/ack`);
+export const silenceAlertApi = (id, minutes) => request.put(`/v1/monitor/alerts/${id}/silence`, { minutes });
+export const listChannelsApi = () => request.get('/v1/monitor/channels');
+export const createChannelApi = (data) => request.post('/v1/monitor/channels', data);
+export const testChannelApi = (id) => request.post(`/v1/monitor/channels/${id}/test`);
