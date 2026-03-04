@@ -1,4 +1,4 @@
 package model
 
-// Model 定义cmdb模块model层空结构。
+// Model 定义 cmdb 模块占位结构。
 type Model struct{}

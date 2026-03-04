@@ -14,7 +14,10 @@ import (
 
 	authhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/handler"
 	authservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/auth/service"
+	cmdbhandler "github.com/Zara1024/OpsNexus/cloudops-server/internal/cmdb/handler"
+	cmdbservice "github.com/Zara1024/OpsNexus/cloudops-server/internal/cmdb/service"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/config"
+	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/crypto"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/database"
 	jwtx "github.com/Zara1024/OpsNexus/cloudops-server/pkg/jwt"
 	"github.com/Zara1024/OpsNexus/cloudops-server/pkg/logger"
@@ -49,6 +52,14 @@ func main() {
 	authServices := authservice.New(db, redisClient, jwtManager)
 	authHandlers := authhandler.New(authServices)
 
+	aes := crypto.NewAESGCM(cfg.JWT.Secret)
+	cmdbServices := cmdbservice.New(db, aes)
+	cmdbHandlers := cmdbhandler.New(cmdbServices)
+
+	jwtMiddleware := middleware.JWTAuth(jwtManager, authServices.Auth)
+	permissionMiddleware := middleware.Permission
+	auditMiddleware := middleware.Audit(log)
+
 	r := gin.New()
 	r.Use(middleware.RequestID())
 	r.Use(middleware.RequestLogger(log))
@@ -63,12 +74,9 @@ func main() {
 	})
 
 	v1 := r.Group("/api/v1")
-	authHandlers.RegisterRoutes(
-		v1,
-		middleware.JWTAuth(jwtManager, authServices.Auth),
-		middleware.Permission,
-		middleware.Audit(log),
-	)
+	authHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
+	cmdbHandlers.RegisterRoutes(v1, jwtMiddleware, permissionMiddleware, auditMiddleware)
+	cmdbHandlers.RegisterWSRoutes(r, jwtMiddleware)
 
 	server := &http.Server{
 		Addr:         fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port),
