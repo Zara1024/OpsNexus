@@ -1,0 +1,16 @@
+{{- if .Values.mysql.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-files" (include "opsnexus.componentFullname" (dict "root" . "component" "mysql")) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "mysql") | nindent 4 }}
+data:
+  01-devops.sql: |
+{{ .Files.Get "files/mysql/devops001.sql" | indent 4 }}
+  02-init.sql: |
+{{ .Files.Get "files/mysql/init.sql" | indent 4 }}
+  my.cnf: |
+{{ .Files.Get "files/mysql/my.cnf" | indent 4 }}
+{{- end }}
+

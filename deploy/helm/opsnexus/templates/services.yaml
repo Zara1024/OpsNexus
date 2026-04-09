@@ -1,0 +1,131 @@
+{{- if .Values.api.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "api") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "api") | nindent 4 }}
+spec:
+  type: {{ .Values.api.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.api.service.port }}
+      targetPort: http
+      protocol: TCP
+      {{- if and (eq .Values.api.service.type "NodePort") .Values.api.service.nodePort }}
+      nodePort: {{ .Values.api.service.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "api") | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.web.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "web") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "web") | nindent 4 }}
+spec:
+  type: {{ .Values.web.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.web.service.port }}
+      targetPort: http
+      protocol: TCP
+      {{- if and (eq .Values.web.service.type "NodePort") .Values.web.service.nodePort }}
+      nodePort: {{ .Values.web.service.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "web") | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.mysql.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "mysql") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "mysql") | nindent 4 }}
+spec:
+  type: {{ .Values.mysql.service.type }}
+  ports:
+    - name: mysql
+      port: {{ .Values.mysql.service.port }}
+      targetPort: mysql
+      protocol: TCP
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "mysql") | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.redis.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "redis") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "redis") | nindent 4 }}
+spec:
+  type: {{ .Values.redis.service.type }}
+  ports:
+    - name: redis
+      port: {{ .Values.redis.service.port }}
+      targetPort: redis
+      protocol: TCP
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "redis") | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.pushgateway.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "pushgateway") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "pushgateway") | nindent 4 }}
+spec:
+  type: {{ .Values.pushgateway.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.pushgateway.service.port }}
+      targetPort: http
+      protocol: TCP
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "pushgateway") | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.prometheus.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "prometheus") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "prometheus") | nindent 4 }}
+spec:
+  type: {{ .Values.prometheus.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.prometheus.service.port }}
+      targetPort: http
+      protocol: TCP
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "prometheus") | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.alertmanager.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "alertmanager") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "alertmanager") | nindent 4 }}
+spec:
+  type: {{ .Values.alertmanager.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.alertmanager.service.port }}
+      targetPort: http
+      protocol: TCP
+  selector:
+    {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "alertmanager") | nindent 4 }}
+{{- end }}

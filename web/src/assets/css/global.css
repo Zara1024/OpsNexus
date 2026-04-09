@@ -1,0 +1,3376 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --bg-dark-base: #0f172a;
+  --bg-dark-surface: #1e293b;
+  --bg-dark-elevated: #334155;
+
+  --color-primary: #3b82f6;
+  --color-primary-strong: #2563eb;
+  --color-secondary: #0ea5e9;
+  --color-accent: #38bdf8;
+  --color-teal: #2dd4bf;
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #f87171;
+  --color-info: #60a5fa;
+
+  --bg-base: var(--bg-dark-base);
+  --bg-base-alt: #111c33;
+  --bg-shell: rgba(15, 23, 42, 0.96);
+  --bg-surface: rgba(30, 41, 59, 0.92);
+  --bg-surface-soft: rgba(30, 41, 59, 0.78);
+  --bg-surface-muted: rgba(148, 163, 184, 0.08);
+  --bg-elevated: rgba(51, 65, 85, 0.96);
+  --bg-input: rgba(51, 65, 85, 0.88);
+  --bg-overlay: rgba(2, 6, 23, 0.72);
+
+  --text-primary: #f8fbff;
+  --text-secondary: rgba(226, 232, 240, 0.92);
+  --text-muted: rgba(148, 163, 184, 0.88);
+  --text-subtle: rgba(148, 163, 184, 0.72);
+
+  --border-subtle: rgba(148, 163, 184, 0.14);
+  --border-medium: rgba(148, 163, 184, 0.24);
+  --border-strong: rgba(59, 130, 246, 0.42);
+  --border-glow: rgba(56, 189, 248, 0.22);
+
+  --shadow-card: 0 24px 54px rgba(2, 8, 23, 0.34);
+  --shadow-elevated: 0 32px 96px rgba(2, 8, 23, 0.52);
+  --shadow-glow: 0 18px 36px rgba(37, 99, 235, 0.22);
+
+  --radius-xs: 10px;
+  --radius-sm: 14px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  --control-height-sm: 32px;
+  --control-height-md: 40px;
+  --control-padding-inline: 16px;
+  --control-radius-md: 14px;
+  --control-radius-pill: 999px;
+  --action-card-radius: 18px;
+  --overlay-viewport-gap: 6vh;
+
+  --page-gutter: 20px;
+  --content-width: 1360px;
+  --content-width-wide: 1560px;
+  --content-width-ultra: 1660px;
+  --transition-fast: 0.18s ease;
+  --transition-normal: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-family: 'Inter', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: #60a5fa;
+  --el-color-primary-light-5: #93c5fd;
+  --el-color-primary-light-7: #bfdbfe;
+  --el-color-primary-dark-2: var(--color-primary-strong);
+  --el-bg-color: var(--bg-dark-surface);
+  --el-bg-color-overlay: var(--bg-dark-surface);
+  --el-bg-color-page: var(--bg-dark-base);
+  --el-fill-color-blank: var(--bg-dark-surface);
+  --el-fill-color-light: rgba(148, 163, 184, 0.08);
+  --el-fill-color-lighter: rgba(148, 163, 184, 0.05);
+  --el-border-color: var(--border-subtle);
+  --el-border-color-light: var(--border-subtle);
+  --el-border-color-lighter: rgba(148, 163, 184, 0.1);
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-muted);
+  --el-text-color-placeholder: var(--text-subtle);
+  --el-mask-color: rgba(2, 6, 23, 0.68);
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 24%),
+    linear-gradient(180deg, #0b1220 0%, #0f172a 42%, #0a1020 100%);
+  color: var(--text-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(53, 164, 255, 0.28);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.38);
+}
+
+.platform-page {
+  padding: var(--page-gutter);
+}
+
+.platform-page__inner {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: grid;
+  gap: 16px;
+}
+
+.platform-page__inner--wide {
+  max-width: var(--content-width-wide);
+}
+
+.platform-page--tight .platform-page__inner {
+  max-width: 1200px;
+}
+
+.table-page,
+.section-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.table-page__card {
+  min-width: 0;
+}
+
+.table-page__table-shell,
+.table-page__footer-shell {
+  min-width: 0;
+  width: 100%;
+}
+
+.table-page__table-shell {
+  display: grid;
+  gap: 16px;
+}
+
+.table-page__table-shell > * {
+  min-width: 0;
+}
+
+.table-page__footer-shell {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table-page__card .section-card__body {
+  display: grid;
+  gap: 16px;
+}
+
+.table-page__card .section-card__footer {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.page-header,
+.page-toolbar,
+.section-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.98) 0%, rgba(15, 23, 42, 0.94) 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.page-header::before,
+.section-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0), rgba(56, 189, 248, 0.42), rgba(59, 130, 246, 0));
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px 30px;
+}
+
+.page-header--compact {
+  padding: 22px 24px;
+}
+
+.page-header__main {
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.page-header__meta,
+.page-header__intro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.page-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(125, 211, 252, 0.88);
+}
+
+.page-title {
+  margin: 0;
+  font-size: clamp(28px, 2.4vw, 34px);
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.page-subtitle {
+  margin: 0;
+  max-width: 760px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.page-intro {
+  display: grid;
+  gap: 8px;
+  max-width: 640px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border-subtle);
+}
+
+.page-intro__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(191, 219, 254, 0.92);
+}
+
+.page-intro__text,
+.page-intro__content {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
+.page-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  padding: 18px 20px;
+}
+
+.page-toolbar__filters,
+.page-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-toolbar__filters {
+  flex: 1 1 620px;
+  min-width: 0;
+}
+
+.page-toolbar__actions {
+  align-items: flex-start;
+  justify-content: flex-end;
+  min-width: fit-content;
+}
+
+.filter-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+}
+
+.filter-field {
+  min-width: 170px;
+  flex: 1 1 180px;
+}
+
+.filter-field--compact {
+  min-width: 150px;
+  flex: 0 1 170px;
+}
+
+.filter-field--wide {
+  min-width: 220px;
+  flex: 2 1 280px;
+}
+
+.ops-cell-ellipsis {
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ops-cell-ellipsis--strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.ops-table-stack {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ops-table-stack__title,
+.ops-table-stack__meta {
+  min-width: 0;
+}
+
+.ops-table-stack__title {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.ops-table-stack__meta {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 130px;
+  padding: 18px 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.92)),
+    linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(14, 165, 233, 0.1));
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 68%);
+  transform: translate(-25%, -25%);
+  pointer-events: none;
+}
+
+.stat-card[data-tone='neutral'] {
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.92)),
+    linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(14, 165, 233, 0.08));
+}
+
+.stat-card[data-tone='primary'] {
+  background:
+    linear-gradient(180deg, rgba(8, 20, 38, 0.96), rgba(6, 14, 28, 0.92)),
+    linear-gradient(135deg, rgba(20, 130, 255, 0.24), rgba(53, 164, 255, 0.1));
+}
+
+.stat-card[data-tone='success'] {
+  background:
+    linear-gradient(180deg, rgba(8, 24, 28, 0.96), rgba(5, 15, 19, 0.92)),
+    linear-gradient(135deg, rgba(47, 212, 157, 0.22), rgba(45, 212, 191, 0.08));
+}
+
+.stat-card[data-tone='warning'] {
+  background:
+    linear-gradient(180deg, rgba(29, 18, 10, 0.96), rgba(18, 10, 4, 0.92)),
+    linear-gradient(135deg, rgba(246, 173, 60, 0.24), rgba(245, 158, 11, 0.08));
+}
+
+.stat-card[data-tone='danger'] {
+  background:
+    linear-gradient(180deg, rgba(31, 12, 15, 0.96), rgba(18, 8, 10, 0.92)),
+    linear-gradient(135deg, rgba(251, 113, 133, 0.24), rgba(239, 68, 68, 0.08));
+}
+
+.stat-card__label {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(226, 232, 240, 0.84);
+}
+
+.stat-card__value {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(28px, 2vw, 34px);
+  line-height: 1;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.stat-card__prefix,
+.stat-card__unit {
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(191, 219, 254, 0.9);
+}
+
+.stat-card__hint {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.section-card {
+  padding: 20px;
+}
+
+.section-card--dense {
+  padding: 16px;
+}
+
+.section-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.section-card__title-wrap {
+  min-width: 0;
+}
+
+.section-card__title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--text-primary);
+}
+
+.section-card__subtitle {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.section-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.section-card__body {
+  min-width: 0;
+}
+
+.section-card__footer {
+  margin-top: 16px;
+}
+
+.empty-state {
+  position: relative;
+  overflow: hidden;
+  padding: 36px 20px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.9));
+  border: 1px dashed var(--border-medium);
+  text-align: center;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.empty-state__halo {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(59, 130, 246, 0.16), transparent 42%),
+    radial-gradient(circle at bottom, rgba(14, 165, 233, 0.14), transparent 36%);
+  pointer-events: none;
+}
+
+.empty-state__icon,
+.empty-state__title,
+.empty-state__description,
+.empty-state__actions {
+  position: relative;
+  z-index: 1;
+}
+
+.empty-state__icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(53, 164, 255, 0.12);
+  color: rgba(125, 211, 252, 0.9);
+}
+
+.empty-state__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.empty-state__description {
+  max-width: 520px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.empty-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ai-workspace {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.ai-workspace__rail,
+.ai-workspace__main,
+.ai-workspace__content {
+  min-width: 0;
+}
+
+.ai-workspace__rail {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.ai-workspace__content {
+  display: grid;
+  gap: 16px;
+}
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.monitor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.page-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.platform-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.muted,
+.muted-text {
+  color: var(--text-muted);
+}
+
+.table-footer,
+.pagination-section,
+.pagination-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.operation-buttons,
+.row-actions,
+.table-actions,
+.operation-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-alert {
+  margin-bottom: 16px;
+}
+
+.platform-data-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.platform-data-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.platform-data-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.platform-surface {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+:is(
+  .application-management,
+  .taskjob-management,
+  .modern-admin-container,
+  .accountauth-management,
+  .loginlog-management,
+  .alert-center-page,
+  .monitor-automation-page,
+  .global-search-page,
+  .work-order-page,
+  .knowledge-page,
+  .assistant-page,
+  .ai-diagnosis-page,
+  .service-market,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .k8s-cluster-management,
+  .dashboard
+) {
+  padding: 0 !important;
+  min-height: auto !important;
+  background: transparent !important;
+}
+
+.el-overlay {
+  background-color: rgba(0, 0, 0, 0.58) !important;
+  backdrop-filter: blur(6px) !important;
+}
+
+.el-card {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-card__header {
+  border-bottom: 1px solid var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+  padding: 18px 20px !important;
+}
+
+.el-card__body {
+  color: var(--text-secondary) !important;
+}
+
+.el-dialog,
+.el-message-box {
+  background: linear-gradient(180deg, rgba(12, 24, 41, 0.98), rgba(9, 17, 30, 0.98)) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-elevated) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-dialog__header,
+.el-message-box__header {
+  padding: 18px 22px 14px !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+.el-dialog__title,
+.el-message-box__title {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+.el-dialog__body,
+.el-message-box__content {
+  padding: 18px 22px !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-dialog__footer,
+.el-message-box__btns {
+  padding: 14px 22px 18px !important;
+  border-top: 1px solid var(--border-subtle) !important;
+}
+
+.el-dialog.ops-dialog {
+  width: min(var(--ops-dialog-width, 860px), calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: calc(100vh - (var(--overlay-viewport-gap) * 2));
+  margin-top: var(--overlay-viewport-gap) !important;
+  display: flex !important;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.el-dialog.ops-overlay--md {
+  --ops-dialog-width: 760px;
+}
+
+.el-dialog.ops-overlay--lg {
+  --ops-dialog-width: 960px;
+}
+
+.el-dialog.ops-overlay--full {
+  --ops-dialog-width: 1180px;
+  max-height: calc(100vh - 32px);
+  margin-top: 16px !important;
+}
+
+.ops-dialog .el-dialog__body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 20px 22px !important;
+}
+
+.ops-dialog .el-dialog__footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(12, 24, 41, 0.2), rgba(9, 17, 30, 0.98));
+  backdrop-filter: blur(10px);
+}
+
+.ops-dialog__body {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.ops-dialog__section,
+.ops-drawer__section {
+  display: grid;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ops-dialog__section-title,
+.ops-drawer__section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ops-dialog__section-subtitle,
+.ops-drawer__section-subtitle {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.el-drawer {
+  background: linear-gradient(180deg, rgba(11, 20, 35, 0.98), rgba(9, 15, 26, 0.98)) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-drawer.ops-drawer {
+  width: min(var(--ops-drawer-width, 820px), calc(100vw - 24px)) !important;
+  max-width: calc(100vw - 24px) !important;
+}
+
+.el-drawer.ops-overlay--md {
+  --ops-drawer-width: 720px;
+}
+
+.el-drawer.ops-overlay--lg {
+  --ops-drawer-width: 960px;
+}
+
+.el-drawer.ops-overlay--full {
+  --ops-drawer-width: 1180px;
+}
+
+.el-drawer__header {
+  margin-bottom: 0 !important;
+  padding: 20px 22px !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  color: var(--text-primary) !important;
+}
+
+.el-drawer__body {
+  padding: 18px 22px !important;
+}
+
+.ops-drawer .el-drawer__body {
+  padding: 0 !important;
+  overflow: auto;
+}
+
+.ops-drawer__body {
+  display: grid;
+  gap: 16px;
+  min-height: 100%;
+  padding: 18px 22px 24px;
+}
+
+.el-form-item__label,
+.el-descriptions__label,
+.el-checkbox__label,
+.el-radio__label {
+  color: var(--text-secondary) !important;
+}
+
+.el-descriptions__body,
+.el-descriptions__label.is-bordered-label,
+.el-descriptions__content.is-bordered-content {
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.el-input__wrapper,
+.el-textarea__inner,
+.el-select .el-input__wrapper,
+.el-date-editor.el-input__wrapper,
+.el-date-editor .el-input__wrapper,
+.el-cascader .el-input__wrapper {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast) !important;
+}
+
+.el-input-group__prepend,
+.el-input-group__append {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--text-muted) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.el-input__wrapper:hover,
+.el-textarea__inner:hover {
+  border-color: var(--border-medium) !important;
+}
+
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus {
+  border-color: var(--border-strong) !important;
+  box-shadow: 0 0 0 3px rgba(20, 130, 255, 0.12) !important;
+}
+
+.el-input__inner,
+.el-textarea__inner {
+  color: var(--text-primary) !important;
+}
+
+.el-input__inner::placeholder,
+.el-textarea__inner::placeholder {
+  color: var(--text-subtle) !important;
+}
+
+.el-select-dropdown,
+.el-picker-panel,
+.el-cascader__dropdown,
+.el-dropdown__popper .el-dropdown-menu,
+.el-select__popper.el-popper,
+.el-tree-select__popper.el-popper,
+.el-autocomplete-suggestion,
+.el-popover.el-popper,
+.el-popper.is-light {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.99), rgba(15, 23, 42, 0.99)) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--shadow-elevated) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-select-dropdown__item,
+.el-dropdown-menu__item,
+.el-picker-panel__content,
+.el-date-picker__header-label {
+  color: var(--text-primary) !important;
+}
+
+.el-select-dropdown__item.is-selected {
+  color: #dbeafe !important;
+  font-weight: 700 !important;
+}
+
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover,
+.el-dropdown-menu__item:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+}
+
+.el-button {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  border-width: 1px !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast) !important;
+}
+
+.el-button:hover {
+  transform: translateY(-1px);
+}
+
+.el-button--primary {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+.el-button--primary:hover {
+  opacity: 0.94 !important;
+}
+
+.el-button--success {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+.el-button--warning {
+  background: rgba(15, 23, 42, 0.18) !important;
+  border-color: var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: none !important;
+}
+
+.el-button--danger {
+  background: rgba(248, 113, 113, 0.14) !important;
+  border-color: rgba(248, 113, 113, 0.28) !important;
+  color: #fca5a5 !important;
+  box-shadow: none !important;
+}
+
+.el-button--default,
+.el-button.is-plain,
+.el-button--info {
+  background: rgba(15, 23, 42, 0.18) !important;
+  border-color: var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: none !important;
+}
+
+.el-button.is-link,
+.el-button--text {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.el-button.is-link.el-button--primary,
+.el-button.is-link.el-button--success,
+.el-button.is-link.el-button--warning,
+.el-button.is-link.el-button--info,
+.el-button--text.el-button--primary,
+.el-button--text.el-button--success,
+.el-button--text.el-button--warning,
+.el-button--text.el-button--info {
+  color: #93c5fd !important;
+}
+
+.el-button.is-link.el-button--danger,
+.el-button--text.el-button--danger {
+  color: #fca5a5 !important;
+}
+
+.el-tag {
+  border-radius: 999px !important;
+  border-color: transparent !important;
+  font-weight: 600 !important;
+}
+
+.el-tag--success {
+  background: rgba(47, 212, 157, 0.16) !important;
+  color: #7ef2c7 !important;
+}
+
+.el-tag--warning {
+  background: rgba(246, 173, 60, 0.16) !important;
+  color: #f7d38d !important;
+}
+
+.el-tag--danger {
+  background: rgba(251, 113, 133, 0.16) !important;
+  color: #ffb0c1 !important;
+}
+
+.el-tag--info,
+.el-tag--primary {
+  background: rgba(53, 164, 255, 0.14) !important;
+  color: #9bd1ff !important;
+}
+
+.el-check-tag {
+  border-radius: 999px !important;
+  border-color: var(--border-subtle) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-check-tag.is-checked {
+  background: rgba(53, 164, 255, 0.16) !important;
+  color: #cde7ff !important;
+  border-color: var(--border-strong) !important;
+}
+
+.el-breadcrumb__inner,
+.el-breadcrumb__separator {
+  color: var(--text-muted) !important;
+}
+
+.el-tabs__item {
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+}
+
+.el-tabs__item.is-active {
+  color: var(--text-primary) !important;
+}
+
+.el-tabs__active-bar {
+  background: linear-gradient(90deg, var(--color-primary-strong), var(--color-primary)) !important;
+}
+
+.el-tabs__nav-wrap::after {
+  background-color: var(--border-subtle) !important;
+}
+
+.el-alert {
+  border-radius: 16px !important;
+  border-color: var(--border-subtle) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.el-alert__title,
+.el-alert__description {
+  color: var(--text-secondary) !important;
+}
+
+.el-empty__description p,
+.el-table__empty-text {
+  color: var(--text-muted) !important;
+}
+
+.el-progress-bar__outer {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+.el-table {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  --el-table-border-color: var(--border-subtle) !important;
+  --el-table-row-hover-bg-color: rgba(59, 130, 246, 0.08) !important;
+  --el-table-current-row-bg-color: rgba(59, 130, 246, 0.12) !important;
+  --el-table-header-bg-color: rgba(51, 65, 85, 0.96) !important;
+  --el-table-tr-bg-color: transparent !important;
+}
+
+.el-table::before,
+.el-table--border::after {
+  background-color: var(--border-subtle) !important;
+}
+
+.el-table th.el-table__cell,
+.el-table td.el-table__cell {
+  background: transparent !important;
+  border-bottom-color: rgba(148, 163, 184, 0.08) !important;
+}
+
+.el-table th.el-table__cell {
+  color: var(--text-primary) !important;
+  font-size: 12px;
+  font-weight: 700 !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.el-table__header-wrapper th.el-table__cell {
+  background: var(--bg-elevated) !important;
+}
+
+.el-table__row:hover > td.el-table__cell {
+  background: rgba(59, 130, 246, 0.08) !important;
+}
+
+.el-pagination {
+  --el-pagination-bg-color: transparent !important;
+  --el-pagination-text-color: var(--text-secondary) !important;
+  --el-pagination-button-bg-color: rgba(51, 65, 85, 0.76) !important;
+  --el-pagination-button-color: var(--text-secondary) !important;
+  --el-pagination-hover-color: var(--color-primary) !important;
+}
+
+.el-pager li {
+  background: rgba(51, 65, 85, 0.76) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 10px !important;
+}
+
+.el-pager li.is-active {
+  color: #fff !important;
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+}
+
+.el-switch__core {
+  border-color: var(--border-medium) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.el-switch.is-checked .el-switch__core {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+}
+
+.el-upload-dragger,
+.el-upload-list__item {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-tree {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-tree-node__content {
+  border-radius: 10px !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-tree-node__content:hover,
+.el-tree-node:focus > .el-tree-node__content {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+.el-tree-node.is-current > .el-tree-node__content {
+  background: rgba(59, 130, 246, 0.14) !important;
+  color: #dbeafe !important;
+}
+
+.el-tree-node__expand-icon,
+.el-tree-node__label {
+  color: inherit !important;
+}
+
+.el-input-number,
+.el-input-number .el-input__wrapper,
+.el-input-number__increase,
+.el-input-number__decrease {
+  background: var(--bg-input) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-input-number__increase:hover,
+.el-input-number__decrease:hover {
+  color: #bfdbfe !important;
+}
+
+.el-message,
+.el-notification {
+  background: rgba(30, 41, 59, 0.96) !important;
+  border: 1px solid var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+}
+
+.el-menu-item,
+.el-sub-menu__title {
+  outline: none !important;
+}
+
+.el-tooltip__trigger:focus-visible {
+  outline: none !important;
+}
+
+.vue-treeselect__control,
+.vue-treeselect__menu {
+  background: var(--bg-input) !important;
+  border-color: var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: none !important;
+}
+
+.vue-treeselect__control:hover,
+.vue-treeselect__control--is-focused {
+  border-color: var(--border-strong) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+.vue-treeselect__placeholder,
+.vue-treeselect__single-value,
+.vue-treeselect__label,
+.vue-treeselect__option {
+  color: var(--text-secondary) !important;
+}
+
+.vue-treeselect__option--highlight,
+.vue-treeselect__option--selected {
+  background: rgba(59, 130, 246, 0.12) !important;
+}
+
+/* Legacy page convergence */
+:is(
+  .role-container,
+  .cmdb-group-management,
+  .cmdb-db-management,
+  .k8s-nodes-management,
+  .work-apply-page
+) {
+  padding: 0 !important;
+  min-height: auto !important;
+  background: transparent !important;
+}
+
+:is(
+  .role-container .main-card,
+  .cmdb-group-management .group-card,
+  .cmdb-db-management .db-card,
+  .k8s-nodes-management .nodes-card,
+  .work-apply-page .apply-card,
+  .application-management .main-card,
+  .k8s-cluster-management .cluster-card,
+  .cmdb-host-management .host-card,
+  .cmdb-device-management .device-card,
+  .modern-admin-container .main-card
+) {
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: blur(18px) !important;
+}
+
+:is(
+  .role-container .gradient-title,
+  .cmdb-group-management .title,
+  .cmdb-db-management .title,
+  .k8s-cluster-management .title,
+  .k8s-nodes-management .title,
+  .work-apply-page .title
+) {
+  color: var(--text-primary) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+:is(
+  .role-container .card-header,
+  .cmdb-db-management .card-header,
+  .k8s-nodes-management .card-header,
+  .modern-admin-container .card-header,
+  .cmdb-host-management .card-header
+) {
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+:is(
+  .role-container .search-section,
+  .cmdb-db-management .search-section,
+  .cmdb-group-management .search-section,
+  .cluster-table-container .search-section,
+  .k8s-nodes-management .search-section,
+  .modern-admin-container .search-card,
+  .cmdb-host-management .search-section,
+  .cmdb-device-management .search-section,
+  .application-management .search-card,
+  .work-apply-page .entry-row
+) {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+.work-apply-page .entry-row {
+  padding: 16px 18px;
+}
+
+:is(
+  .role-container .search-form .el-form-item__label,
+  .cmdb-db-management .search-form .el-form-item__label,
+  .cmdb-group-management .search-form .el-form-item__label,
+  .cluster-table-container .search-form .el-form-item__label,
+  .k8s-nodes-management .search-form .el-form-item__label,
+  .modern-admin-container .modern-form .el-form-item__label,
+  .cmdb-host-management .search-section .el-form-item__label,
+  .cmdb-device-management .search-section .el-form-item__label,
+  .application-management .search-form .el-form-item__label,
+  .work-apply-page .subtitle,
+  .work-apply-page .el-form-item__label,
+  .role-container .dialog-form .el-form-item__label,
+  .modern-admin-container .modern-dialog-form .el-form-item__label,
+  .application-management .compact-form .el-form-item__label,
+  .k8s-cluster-management .compact-form .el-form-item__label,
+  .k8s-nodes-management .el-form-item__label
+) {
+  color: var(--text-secondary) !important;
+}
+
+:is(
+  .modern-btn.primary-btn,
+  .modern-btn.success-btn,
+  .dialog-btn.confirm-btn,
+  .cmdb-host-management .terminal-btn
+) {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+:is(
+  .modern-btn.reset-btn,
+  .modern-btn.secondary-btn,
+  .dialog-btn.cancel-btn
+) {
+  background: rgba(15, 23, 42, 0.18) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-medium) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .modern-admin-container .modern-table .el-table__header,
+  .role-container .modern-table .el-table__header,
+  .cmdb-group-management .modern-table .el-table__header,
+  .cmdb-db-management .db-table .el-table__header,
+  .cluster-table .el-table__header,
+  .nodes-table .el-table__header,
+  .application-management .app-table .el-table__header,
+  .host-selector-dialog .el-table__header,
+  .cmdb-host-management .el-table__header,
+  .cmdb-device-management .el-table__header
+) {
+  background: transparent !important;
+}
+
+:is(
+  .modern-admin-container .modern-table .el-table__header-wrapper th.el-table__cell,
+  .role-container .modern-table .el-table__header-wrapper th.el-table__cell,
+  .cmdb-group-management .modern-table .el-table__header-wrapper th.el-table__cell,
+  .cmdb-db-management .db-table .el-table__header-wrapper th.el-table__cell,
+  .cluster-table .el-table__header-wrapper th.el-table__cell,
+  .nodes-table .el-table__header-wrapper th.el-table__cell,
+  .application-management .app-table .el-table__header-wrapper th.el-table__cell,
+  .host-selector-dialog .el-table__header-wrapper th.el-table__cell,
+  .cmdb-host-management .el-table__header-wrapper th.el-table__cell,
+  .cmdb-device-management .el-table__header-wrapper th.el-table__cell
+) {
+  background: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+  border-bottom-color: rgba(148, 163, 184, 0.14) !important;
+}
+
+:is(
+  .modern-admin-container .modern-table .el-table__row td,
+  .role-container .modern-table .el-table__row td,
+  .cmdb-group-management .modern-table .el-table__row td,
+  .cmdb-db-management .db-table .el-table__row td,
+  .cluster-table .el-table__row td,
+  .nodes-table .el-table__row td,
+  .application-management .app-table .el-table__row td
+) {
+  color: var(--text-secondary) !important;
+}
+
+:is(
+  .modern-admin-container .modern-table .el-table__row:hover,
+  .role-container .modern-table .el-table__row:hover,
+  .cmdb-group-management .modern-table .el-table__row:hover,
+  .cmdb-db-management .db-table .el-table__row:hover,
+  .cluster-table .el-table__row:hover
+) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .role-container .modern-pagination,
+  .application-management .pagination-wrapper
+) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .clean-dialog .el-dialog,
+  .modern-dialog .el-dialog,
+  .compact-dialog .el-dialog,
+  .register-dialog .el-dialog,
+  .edit-dialog .el-dialog,
+  .credential-view-dialog .el-dialog,
+  .resources-dialog .el-dialog,
+  .taint-dialog .el-dialog,
+  .label-dialog .el-dialog,
+  .drain-dialog .el-dialog,
+  .node-labels-view-dialog .el-dialog,
+  .jenkins-env-dialog .el-dialog,
+  .host-selector-dialog .el-dialog
+) {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98)) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+:is(
+  .clean-dialog .el-dialog__header,
+  .modern-dialog .el-dialog__header,
+  .compact-dialog .el-dialog__header,
+  .register-dialog .el-dialog__header,
+  .edit-dialog .el-dialog__header,
+  .credential-view-dialog .el-dialog__header,
+  .resources-dialog .el-dialog__header,
+  .taint-dialog .el-dialog__header,
+  .label-dialog .el-dialog__header,
+  .drain-dialog .el-dialog__header,
+  .node-labels-view-dialog .el-dialog__header,
+  .jenkins-env-dialog .el-dialog__header,
+  .host-selector-dialog .el-dialog__header
+) {
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.98), rgba(30, 41, 59, 0.98)) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  border-radius: 20px 20px 0 0 !important;
+  padding: 18px 20px !important;
+}
+
+:is(
+  .clean-dialog .el-dialog__title,
+  .modern-dialog .el-dialog__title,
+  .compact-dialog .el-dialog__title,
+  .register-dialog .el-dialog__title,
+  .edit-dialog .el-dialog__title,
+  .credential-view-dialog .el-dialog__title,
+  .resources-dialog .el-dialog__title,
+  .taint-dialog .el-dialog__title,
+  .label-dialog .el-dialog__title,
+  .drain-dialog .el-dialog__title,
+  .node-labels-view-dialog .el-dialog__title,
+  .jenkins-env-dialog .el-dialog__title,
+  .host-selector-dialog .el-dialog__title
+) {
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+:is(
+  .clean-dialog .el-dialog__headerbtn .el-dialog__close,
+  .modern-dialog .el-dialog__headerbtn .el-dialog__close,
+  .compact-dialog .el-dialog__headerbtn .el-dialog__close,
+  .register-dialog .el-dialog__headerbtn .el-dialog__close,
+  .edit-dialog .el-dialog__headerbtn .el-dialog__close,
+  .credential-view-dialog .el-dialog__headerbtn .el-dialog__close,
+  .node-labels-view-dialog .el-dialog__headerbtn .el-dialog__close
+) {
+  color: var(--text-muted) !important;
+}
+
+:is(
+  .application-management .detail-hero,
+  .application-management .detail-card,
+  .jenkins-env-dialog .env-main-card,
+  .jenkins-env-dialog .form-card,
+  .credential-view-dialog .code-container,
+  .k8s-cluster-management .node-section,
+  .k8s-cluster-management .private-registry-config,
+  .k8s-cluster-management .selected-hosts,
+  .k8s-nodes-management .resource-card
+) {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .application-management .detail-app-name,
+  .application-management .detail-card-title,
+  .k8s-nodes-management .labels-section h4,
+  .k8s-nodes-management .resource-title,
+  .jenkins-env-dialog .section-title
+) {
+  color: var(--text-primary) !important;
+}
+
+:is(
+  .application-management .detail-app-meta,
+  .application-management .detail-card-subtitle,
+  .application-management .detail-label,
+  .application-management .detail-value,
+  .cluster-table .version-text,
+  .cluster-table .description-text,
+  .application-management .coverage-sub,
+  .application-management .latest-meta,
+  .application-management .muted,
+  .k8s-cluster-management .plugin-label,
+  .k8s-cluster-management .mode-tip,
+  .k8s-cluster-management .auto-deploy-tip,
+  .k8s-cluster-management .hosts-info,
+  .k8s-cluster-management .node-count,
+  .k8s-cluster-management .etcd-tip,
+  .k8s-cluster-management .no-hosts,
+  .k8s-nodes-management .resource-unit,
+  .k8s-nodes-management .resource-details,
+  .k8s-nodes-management .form-tip,
+  .credential-view-dialog .credential-info,
+  .jenkins-env-dialog .server-id,
+  .jenkins-env-dialog .job-name,
+  .jenkins-env-dialog .create-time,
+  .jenkins-env-dialog .error-message
+) {
+  color: var(--text-muted) !important;
+}
+
+.cluster-table .cluster-name-link:hover,
+.application-management .latest-title,
+.application-management .detail-link {
+  color: #93c5fd !important;
+}
+
+.credential-view-dialog .credential-header,
+.credential-view-dialog .credential-info {
+  border-color: var(--border-subtle) !important;
+}
+
+.credential-view-dialog .code-container {
+  background: rgba(15, 23, 42, 0.76) !important;
+}
+
+.credential-view-dialog .code-container::-webkit-scrollbar-track {
+  background: rgba(51, 65, 85, 0.72) !important;
+}
+
+.credential-view-dialog .code-container::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.38) !important;
+}
+
+.credential-editor-container .credential-actions .upload-btn,
+.credential-editor-container .credential-actions .el-button--success {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+.credential-editor-container .credential-actions .upload-btn:hover:not(:disabled),
+.credential-editor-container .credential-actions .el-button--success:hover:not(:disabled),
+.credential-editor-container .credential-actions .el-button--success:focus:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+.credential-editor-container .credential-actions .el-button--warning {
+  background: rgba(15, 23, 42, 0.18) !important;
+  border-color: var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+}
+
+.k8s-cluster-management .private-registry-config .el-input-group__prepend {
+  background: rgba(51, 65, 85, 0.96) !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+.nodes-table {
+  background: transparent !important;
+  border-radius: 18px !important;
+  backdrop-filter: none !important;
+}
+
+:is(
+  .nodes-table .version-text,
+  .nodes-table .resource-label
+) {
+  color: var(--text-muted) !important;
+}
+
+:is(
+  .nodes-table .resource-value,
+  .nodes-table .cluster-name
+) {
+  color: var(--text-secondary) !important;
+}
+
+.group-tree-section .node-label {
+  color: var(--text-secondary) !important;
+}
+
+.group-tree-section .parent-node .node-label {
+  color: var(--text-primary) !important;
+}
+
+:is(
+  .group-tree-section .stats-text,
+  .group-tree-section .main-icon
+) {
+  color: #7dd3fc !important;
+}
+
+:is(
+  .group-tree-section .subtitle,
+  .group-tree-section .stats-label,
+  .group-tree-section .search-icon,
+  .group-tree-section .host-count
+) {
+  color: var(--text-muted) !important;
+}
+
+.group-tree-section .hover-effect {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(14, 165, 233, 0.06)) !important;
+}
+
+.group-tree-section .dot-indicator {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+}
+
+.group-tree-section .tech-tree .el-tree-node.is-current > .el-tree-node__content .tree-node {
+  background: rgba(59, 130, 246, 0.14) !important;
+  border: 1px solid rgba(59, 130, 246, 0.18) !important;
+}
+
+.group-tree-section .tech-tree .el-tree-node.is-current > .el-tree-node__content .node-label {
+  color: #dbeafe !important;
+}
+
+.group-tree-section .context-menu {
+  background: rgba(30, 41, 59, 0.96) !important;
+  border: 1px solid var(--border-medium) !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+.group-tree-section .context-menu-item {
+  color: var(--text-secondary) !important;
+}
+
+.group-tree-section .context-menu-item:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #dbeafe !important;
+}
+
+/* Legacy Page Cleanup */
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .alert-history-page.alert-history-page,
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) {
+  background: transparent !important;
+}
+
+:is(
+  .role-container.role-container .main-card.main-card,
+  .dept-container.dept-container .glass-card.glass-card,
+  .modern-menu-container.modern-menu-container .main-card.main-card,
+  .alert-history-page.alert-history-page .page-card.page-card,
+  .taskansible-management.taskansible-management .taskansible-card.taskansible-card,
+  .task-history-management.task-history-management .task-history-card.task-history-card
+) {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.94)) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: var(--shadow-card) !important;
+  backdrop-filter: none !important;
+}
+
+:is(
+  .role-container.role-container .card-header.card-header,
+  .dept-container.dept-container .card-header.card-header,
+  .modern-menu-container.modern-menu-container .card-header.card-header,
+  .taskansible-management.taskansible-management .card-header.card-header,
+  .task-history-management.task-history-management .card-header.card-header
+) {
+  border-bottom-color: var(--border-subtle) !important;
+}
+
+:is(
+  .role-container.role-container .gradient-title.gradient-title,
+  .dept-container.dept-container .gradient-title.gradient-title,
+  .modern-menu-container.modern-menu-container .gradient-title.gradient-title,
+  .taskansible-management.taskansible-management .gradient-title.gradient-title,
+  .task-history-management.task-history-management .gradient-title.gradient-title,
+  .alert-history-page.alert-history-page .title.title
+) {
+  color: var(--text-primary) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: none !important;
+}
+
+:is(
+  .alert-history-page.alert-history-page .subtitle.subtitle,
+  .alert-history-page.alert-history-page .summary-label.summary-label,
+  .alert-history-page.alert-history-page .summary-desc.summary-desc,
+  .alert-history-page.alert-history-page .detail-label.detail-label,
+  .alert-history-page.alert-history-page .section-title.section-title,
+  .role-container.role-container .search-form .el-form-item__label,
+  .dept-container.dept-container .search-form .el-form-item__label,
+  .modern-menu-container.modern-menu-container .search-form .el-form-item__label,
+  .taskansible-management.taskansible-management .search-form .el-form-item__label,
+  .task-history-management.task-history-management .search-form .el-form-item__label
+) {
+  color: var(--text-muted) !important;
+}
+
+:is(
+  .role-container.role-container .search-section.search-section,
+  .dept-container.dept-container .search-section.search-section,
+  .modern-menu-container.modern-menu-container .search-section.search-section,
+  .alert-history-page.alert-history-page .search-section.search-section,
+  .alert-history-page.alert-history-page .detail-card.detail-card,
+  .alert-history-page.alert-history-page .detail-section.detail-section,
+  .taskansible-management.taskansible-management .search-section.search-section,
+  .task-history-management.task-history-management .search-section.search-section
+) {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container,
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) :is(
+  .modern-input .el-input__wrapper,
+  .modern-select .el-input__wrapper,
+  .search-input .el-input__wrapper,
+  .search-select .el-input__wrapper,
+  .search-date .el-input__wrapper,
+  .form-input .el-input__wrapper,
+  .form-textarea .el-textarea__inner,
+  .dialog-content .modern-form .el-input__wrapper,
+  .dialog-content .modern-form .el-select__wrapper,
+  .dialog-content .modern-form .el-input-number .el-input__wrapper
+) {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container,
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) :is(
+  .modern-input .el-input__wrapper:hover,
+  .modern-select .el-input__wrapper:hover,
+  .search-input .el-input__wrapper:hover,
+  .search-select .el-input__wrapper:hover,
+  .search-date .el-input__wrapper:hover,
+  .form-input .el-input__wrapper:hover,
+  .form-textarea .el-textarea__inner:hover,
+  .dialog-content .modern-form .el-input__wrapper:hover,
+  .dialog-content .modern-form .el-select__wrapper:hover,
+  .dialog-content .modern-form .el-input-number .el-input__wrapper:hover
+) {
+  border-color: var(--border-medium) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container,
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) :is(
+  .modern-input .el-input__wrapper.is-focus,
+  .modern-select .el-input__wrapper.is-focus,
+  .search-input .el-input__wrapper.is-focus,
+  .search-select .el-input__wrapper.is-focus,
+  .search-date .el-input__wrapper.is-focus,
+  .form-input .el-input__wrapper.is-focus,
+  .form-textarea .el-textarea__inner:focus,
+  .dialog-content .modern-form .el-input__wrapper.is-focus,
+  .dialog-content .modern-form .el-select__wrapper.is-focus,
+  .dialog-content .modern-form .el-input-number .el-input__wrapper.is-focus
+) {
+  border-color: var(--border-strong) !important;
+  box-shadow: 0 0 0 3px rgba(20, 130, 255, 0.12) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container,
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) :is(
+  .modern-input .el-input__inner,
+  .modern-select .el-input__inner,
+  .search-input .el-input__inner,
+  .search-select .el-input__inner,
+  .search-date .el-input__inner,
+  .form-input .el-input__inner,
+  .form-textarea .el-textarea__inner,
+  .dialog-content .modern-form .el-input__inner,
+  .dialog-content .modern-form .el-select__selected-item,
+  .dialog-content .modern-form .el-select__placeholder,
+  .dialog-content .modern-form .el-input-number .el-input__inner
+) {
+  color: var(--text-primary) !important;
+}
+
+:is(
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) .modern-treeselect :is(.vue-treeselect__control, .vue-treeselect__menu) {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) .modern-treeselect :is(
+  .vue-treeselect__placeholder,
+  .vue-treeselect__single-value,
+  .vue-treeselect__option
+) {
+  color: var(--text-secondary) !important;
+}
+
+:is(
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) .modern-treeselect .vue-treeselect__option:hover {
+  background: rgba(59, 130, 246, 0.12) !important;
+}
+
+:is(
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) .modern-treeselect .vue-treeselect__option--selected {
+  background: rgba(59, 130, 246, 0.16) !important;
+  color: #dbeafe !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container
+) :is(.clean-dialog .el-dialog, .modern-dialog .el-dialog) {
+  background: linear-gradient(180deg, rgba(12, 24, 41, 0.98), rgba(9, 17, 30, 0.98)) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container
+) :is(.clean-dialog .el-dialog__header, .modern-dialog .el-dialog__header) {
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.98), rgba(30, 41, 59, 0.98)) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container
+) :is(.clean-dialog .el-dialog__title, .modern-dialog .el-dialog__title) {
+  color: var(--text-primary) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container
+) :is(.clean-dialog .el-dialog__headerbtn .el-dialog__close, .modern-dialog .el-dialog__headerbtn .el-dialog__close) {
+  color: var(--text-muted) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container
+) :is(.dialog-form .el-form-item__label, .dialog-content .modern-form .el-form-item__label, .modern-radio-group .el-radio__label) {
+  color: var(--text-secondary) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) :is(.primary-btn, .success-btn, .modern-btn-primary, .confirm-btn) {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) :is(.reset-btn, .secondary-btn, .modern-btn-cancel, .cancel-btn) {
+  background: rgba(15, 23, 42, 0.18) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-medium) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .role-container.role-container,
+  .dept-container.dept-container,
+  .modern-menu-container.modern-menu-container,
+  .modern-admin-container.modern-admin-container
+) :is(.reset-btn:hover, .secondary-btn:hover, .modern-btn-cancel:hover, .cancel-btn:hover) {
+  background: rgba(15, 23, 42, 0.24) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .role-container.role-container .modern-table .el-table__header-wrapper th.el-table__cell,
+  .dept-container.dept-container .modern-table .el-table__header-wrapper th.el-table__cell,
+  .modern-menu-container.modern-menu-container .modern-table .el-table__header-wrapper th.el-table__cell,
+  .taskansible-management.taskansible-management .el-table__header-wrapper th.el-table__cell,
+  .task-history-management.task-history-management .el-table__header-wrapper th.el-table__cell,
+  .alert-history-page.alert-history-page .data-table .el-table__header-wrapper th.el-table__cell
+) {
+  background: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: rgba(148, 163, 184, 0.14) !important;
+  text-shadow: none !important;
+}
+
+:is(
+  .role-container.role-container .modern-table .el-table__row td,
+  .dept-container.dept-container .modern-table .el-table__row td,
+  .modern-menu-container.modern-menu-container .modern-table .el-table__row td,
+  .taskansible-management.taskansible-management .el-table__row td,
+  .task-history-management.task-history-management .el-table__row td,
+  .alert-history-page.alert-history-page .data-table .el-table__row td
+) {
+  background: transparent !important;
+  border-bottom-color: rgba(148, 163, 184, 0.08) !important;
+  color: var(--text-secondary) !important;
+}
+
+:is(
+  .role-container.role-container .modern-table .el-table__row:hover,
+  .dept-container.dept-container .modern-table .el-table__row:hover,
+  .modern-menu-container.modern-menu-container .modern-table .el-table__row:hover,
+  .taskansible-management.taskansible-management .el-table__row:hover,
+  .task-history-management.task-history-management .el-table__row:hover
+) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.role-container.role-container .permission-tree.permission-tree {
+  background: transparent !important;
+}
+
+:is(
+  .role-container.role-container .permission-tree .el-tree-node__content,
+  .modern-admin-container.modern-admin-container .modern-tree .el-tree-node__content
+) {
+  color: var(--text-secondary) !important;
+  border-radius: 10px !important;
+}
+
+:is(
+  .role-container.role-container .permission-tree .el-tree-node__content:hover,
+  .modern-admin-container.modern-admin-container .modern-tree .el-tree-node__content:hover,
+  .modern-admin-container.modern-admin-container .modern-tree .el-tree-node:focus > .el-tree-node__content
+) {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+:is(
+  .role-container.role-container .permission-tree .el-tree-node__label,
+  .modern-admin-container.modern-admin-container .modern-tree .el-tree-node__label,
+  .modern-admin-container.modern-admin-container .tree-node
+) {
+  color: var(--text-secondary) !important;
+}
+
+:is(
+  .role-container.role-container .modern-pagination,
+  .task-history-management.task-history-management .pagination-wrap,
+  .taskansible-management.taskansible-management .pagination-wrap
+) {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.alert-history-page.alert-history-page {
+  min-height: auto !important;
+  padding: 0 !important;
+}
+
+:is(
+  .alert-history-page.alert-history-page .summary-value.summary-value,
+  .alert-history-page.alert-history-page .summary-time.summary-time,
+  .alert-history-page.alert-history-page .detail-value.detail-value,
+  .alert-history-page.alert-history-page .detail-text.detail-text
+) {
+  color: var(--text-primary) !important;
+}
+
+.alert-history-page.alert-history-page .detail-pre.detail-pre {
+  background: rgba(3, 9, 18, 0.96) !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: #e2e8f0 !important;
+}
+
+.alert-center-page.alert-center-page .summary-card.purple {
+  background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%) !important;
+}
+
+:is(
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) .el-button--warning {
+  background: rgba(15, 23, 42, 0.18) !important;
+  border: 1px solid var(--border-medium) !important;
+  color: var(--text-secondary) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) .el-button--warning:hover {
+  background: rgba(15, 23, 42, 0.24) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+:is(
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) .el-button--success {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+  box-shadow: var(--shadow-glow) !important;
+}
+
+:is(
+  .taskansible-management.taskansible-management,
+  .task-history-management.task-history-management
+) .el-button--success:hover {
+  opacity: 0.94 !important;
+}
+
+/* Legacy dark-theme reconciliation for old purple/light-card pages */
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) {
+  color: var(--text-secondary) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .cmdb-device-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management
+) {
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.14), transparent 30%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(2, 6, 23, 0.92)) !important;
+}
+
+#app :is(
+  .k8s-namespace-management .namespace-card,
+  .k8s-config-management .config-card,
+  .k8s-network-management .network-card,
+  .k8s-storage-management .storage-card,
+  .k8s-nodes-management .nodes-card,
+  .k8s-nodes-management .resource-card,
+  .k8s-workloads-management .workloads-card,
+  .k8s-cluster-management .cluster-card,
+  .k8s-cluster-details .overview-card,
+  .k8s-cluster-details .info-card,
+  .k8s-cluster-details .nodes-card,
+  .k8s-cluster-details .events-card,
+  .node-details-container .overview-card,
+  .node-details-container .info-card,
+  .namespaces-monitoring .namespace-card,
+  .nodes-monitoring .node-card,
+  .nodes-monitoring .resource-card,
+  .nodes-monitoring .pod-list-card,
+  .cmdb-db-management .db-card,
+  .cmdb-host-management .host-card,
+  .cmdb-device-management .device-card,
+  .ecs-key-management .ecs-key-card,
+  .key-management .key-card,
+  .deploy-manage .manage-card,
+  .quick-release-management .glass-card,
+  .quick-deployment-container .glass-card,
+  .quick-deployment-container .deployment-card,
+  .personal-management .profile-card,
+  .personal-management .detail-card
+) {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.92)) !important;
+  border: 1px solid var(--border-medium) !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-secondary) !important;
+}
+
+#app :is(
+  .k8s-namespace-management .card-header .title,
+  .k8s-config-management .card-header .title,
+  .k8s-network-management .card-header .title,
+  .k8s-storage-management .card-header .title,
+  .k8s-nodes-management .card-header .title,
+  .k8s-workloads-management .card-header .title,
+  .k8s-cluster-management .card-header .title,
+  .cmdb-db-management .card-header .title,
+  .ecs-key-management .card-header .title,
+  .key-management .card-header .title,
+  .deploy-manage .card-header .title,
+  .personal-management .card-header .title,
+  .node-details-container .page-title,
+  .k8s-cluster-details .cluster-title,
+  .namespaces-monitoring .namespace-details h4,
+  .nodes-monitoring .node-details h4,
+  .k8s-cluster-details .info-card .label,
+  .node-details-container .card-label,
+  .quick-deployment-container .deployment-title
+) {
+  color: var(--text-primary) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  background-clip: border-box !important;
+  text-shadow: none !important;
+}
+
+#app :is(
+  .k8s-namespace-management .search-section,
+  .k8s-config-management .search-section,
+  .k8s-network-management .search-section,
+  .k8s-storage-management .search-section,
+  .k8s-nodes-management .search-section,
+  .k8s-workloads-management .search-section,
+  .k8s-cluster-management .search-section,
+  .cmdb-db-management .search-section,
+  .ecs-key-management .search-section,
+  .key-management .search-section,
+  .deploy-manage .search-section,
+  .personal-management .search-section
+) {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: none !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management
+) .el-form-item__label {
+  color: var(--text-secondary) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) .el-input__wrapper,
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) .el-select__wrapper {
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: none !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) .el-input__wrapper:hover,
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) .el-select__wrapper:hover {
+  border-color: var(--border-medium) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) .is-focus.el-input__wrapper,
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) .is-focused.el-select__wrapper {
+  border-color: var(--border-strong) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) :is(.el-input__inner, .el-select__selected-item, .el-textarea__inner, .el-select__placeholder) {
+  color: var(--text-primary) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .cmdb-db-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .personal-management,
+  .quick-release-management,
+  .quick-deployment-container
+) :is(.el-input__inner::placeholder, .el-textarea__inner::placeholder) {
+  color: var(--text-subtle) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+  --el-table-border-color: var(--border-subtle) !important;
+  --el-table-row-hover-bg-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table__header,
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table__header-wrapper th.el-table__cell {
+  background: var(--bg-elevated) !important;
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table__header-wrapper th.el-table__cell .cell {
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table td.el-table__cell {
+  color: var(--text-secondary) !important;
+  border-bottom-color: rgba(148, 163, 184, 0.08) !important;
+}
+
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table__row:hover,
+#app :is(
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-nodes-management,
+  .k8s-workloads-management,
+  .k8s-cluster-management,
+  .k8s-cluster-details,
+  .node-details-container,
+  .namespaces-monitoring,
+  .nodes-monitoring,
+  .cmdb-db-management,
+  .cmdb-host-management,
+  .ecs-key-management,
+  .key-management,
+  .deploy-manage,
+  .quick-release-management
+) .el-table__row:hover > td.el-table__cell {
+  background: rgba(59, 130, 246, 0.08) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+#app :is(
+  .k8s-namespace-management .namespace-name-link,
+  .namespaces-monitoring .namespace-name,
+  .nodes-monitoring .node-ip,
+  .k8s-cluster-details .cluster-version,
+  .k8s-cluster-details .cluster-type,
+  .quick-deployment-container .deployment-meta .meta-text
+) {
+  color: #93c5fd !important;
+}
+
+#app .k8s-namespace-management :is(.resource-label, .cluster-name, .namespace-name, .section-header h4, .labels-section h4, .no-labels, .empty-state),
+#app :is(.k8s-config-management, .k8s-network-management, .k8s-storage-management, .k8s-nodes-management, .k8s-workloads-management, .cmdb-db-management, .ecs-key-management, .key-management, .deploy-manage, .personal-management) :is(.resource-label, .resource-count, .content-header, .cluster-name, .namespace-name, .search-icon, .resource-unit, .resource-details),
+#app :is(.node-details-container, .k8s-cluster-details, .namespaces-monitoring, .nodes-monitoring) :is(.card-sub, .cluster-meta, .metric-label, .metric-unit) {
+  color: var(--text-muted) !important;
+}
+
+#app .k8s-namespace-management :is(.resource-value, .label-icon-button),
+#app :is(.k8s-config-management, .k8s-network-management, .k8s-storage-management, .k8s-nodes-management, .k8s-workloads-management, .cmdb-db-management, .ecs-key-management, .key-management, .deploy-manage, .personal-management, .node-details-container, .k8s-cluster-details, .namespaces-monitoring, .nodes-monitoring) :is(.resource-value, .cluster-name, .namespace-name, .metric-value, .card-value) {
+  color: var(--text-secondary) !important;
+}
+
+#app .k8s-namespace-management .label-icon-button:hover,
+#app :is(.ecs-key-management, .deploy-manage) .el-button--text:hover,
+#app :is(.quick-release-management, .quick-deployment-container) .el-button.is-link:hover {
+  color: #dbeafe !important;
+}
+
+#app :is(
+  .key-management .config-tabs .el-tabs__item,
+  .k8s-network-management .network-tabs .el-tabs__item,
+  .personal-management .personal-tabs .el-tabs__item
+) {
+  color: var(--text-muted) !important;
+}
+
+#app :is(
+  .key-management .config-tabs .el-tabs__item.is-active,
+  .k8s-network-management .network-tabs .el-tabs__item.is-active,
+  .personal-management .personal-tabs .el-tabs__item.is-active
+) {
+  color: #bfdbfe !important;
+}
+
+#app :is(
+  .key-management .config-tabs .el-tabs__active-bar,
+  .k8s-network-management .network-tabs .el-tabs__active-bar,
+  .personal-management .personal-tabs .el-tabs__active-bar
+) {
+  background: linear-gradient(135deg, var(--color-primary-strong), var(--color-primary)) !important;
+}
+
+#app :is(
+  .create-namespace-dialog .el-dialog,
+  .namespace-detail-dialog .el-dialog,
+  .resource-quota-dialog .el-dialog,
+  .limit-range-dialog .el-dialog,
+  .create-quota-dialog .el-dialog,
+  .create-limit-range-dialog .el-dialog,
+  .detail-dialog .el-dialog,
+  .node-detail-dialog .el-dialog,
+  .history-detail-dialog .el-dialog,
+  .task-detail-dialog .el-dialog
+) {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98)) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 20px !important;
+  box-shadow: var(--shadow-elevated) !important;
+}
+
+#app :is(
+  .create-namespace-dialog .el-dialog__header,
+  .namespace-detail-dialog .el-dialog__header,
+  .resource-quota-dialog .el-dialog__header,
+  .limit-range-dialog .el-dialog__header,
+  .create-quota-dialog .el-dialog__header,
+  .create-limit-range-dialog .el-dialog__header,
+  .detail-dialog .el-dialog__header,
+  .node-detail-dialog .el-dialog__header,
+  .history-detail-dialog .el-dialog__header,
+  .task-detail-dialog .el-dialog__header
+) {
+  background: linear-gradient(180deg, rgba(51, 65, 85, 0.98), rgba(30, 41, 59, 0.98)) !important;
+  border-bottom: 1px solid var(--border-subtle) !important;
+  border-radius: 20px 20px 0 0 !important;
+}
+
+#app :is(
+  .create-namespace-dialog .el-dialog__title,
+  .namespace-detail-dialog .el-dialog__title,
+  .resource-quota-dialog .el-dialog__title,
+  .limit-range-dialog .el-dialog__title,
+  .create-quota-dialog .el-dialog__title,
+  .create-limit-range-dialog .el-dialog__title,
+  .detail-dialog .el-dialog__title,
+  .node-detail-dialog .el-dialog__title,
+  .history-detail-dialog .el-dialog__title,
+  .task-detail-dialog .el-dialog__title
+) {
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+#app :is(
+  .create-namespace-dialog .el-dialog__body,
+  .namespace-detail-dialog .el-dialog__body,
+  .resource-quota-dialog .el-dialog__body,
+  .limit-range-dialog .el-dialog__body,
+  .create-quota-dialog .el-dialog__body,
+  .create-limit-range-dialog .el-dialog__body,
+  .detail-dialog .el-dialog__body,
+  .node-detail-dialog .el-dialog__body,
+  .history-detail-dialog .el-dialog__body,
+  .task-detail-dialog .el-dialog__body
+) {
+  color: var(--text-secondary) !important;
+}
+
+#app :is(
+  .create-namespace-dialog,
+  .namespace-detail-dialog,
+  .resource-quota-dialog,
+  .limit-range-dialog,
+  .create-quota-dialog,
+  .create-limit-range-dialog,
+  .detail-dialog,
+  .node-detail-dialog,
+  .history-detail-dialog,
+  .task-detail-dialog
+) :is(h4, .section-header h4, .labels-section h4, .el-descriptions__label, .el-form-item__label) {
+  color: var(--text-primary) !important;
+  border-color: var(--border-subtle) !important;
+}
+
+#app :is(
+  .create-namespace-dialog,
+  .namespace-detail-dialog,
+  .resource-quota-dialog,
+  .limit-range-dialog,
+  .create-quota-dialog,
+  .create-limit-range-dialog,
+  .detail-dialog,
+  .node-detail-dialog,
+  .history-detail-dialog,
+  .task-detail-dialog
+) :is(.no-labels, .empty-state, .form-hint, .form-hint .el-text, .cluster-name, .resource-label, .el-empty__description) {
+  color: var(--text-muted) !important;
+}
+
+#app :is(
+  .create-namespace-dialog,
+  .namespace-detail-dialog,
+  .resource-quota-dialog,
+  .limit-range-dialog,
+  .create-quota-dialog,
+  .create-limit-range-dialog,
+  .detail-dialog,
+  .node-detail-dialog,
+  .history-detail-dialog,
+  .task-detail-dialog
+) :is(.el-descriptions__content, .el-descriptions__label, .el-divider__text, .label-tag, .system-label) {
+  background: transparent !important;
+  color: var(--text-secondary) !important;
+}
+
+/* Legacy workspace polish */
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management
+) {
+  padding: 0 !important;
+  min-height: auto !important;
+  background: transparent !important;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-workloads-management
+) :is(
+  .page-card,
+  .audit-card,
+  .ldap-card,
+  .agent-card,
+  .dblog-card,
+  .glass-card,
+  .main-card
+) {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.92)) !important;
+  border: 1px solid var(--border-medium) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-card) !important;
+  color: var(--text-secondary) !important;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-workloads-management
+) :is(.card-header, .header-row, .panel-header, .section-header, .test-panel) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-workloads-management
+) :is(.title, .panel-title, .section-title, .test-title, .gradient-title) {
+  margin: 0;
+  color: var(--text-primary) !important;
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  font-size: clamp(22px, 2vw, 28px);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .cmdb-host-management,
+  .cmdb-device-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-workloads-management
+) :is(.subtitle, .panel-subtitle, .test-subtitle) {
+  margin-top: 6px;
+  max-width: 760px;
+  color: var(--text-muted) !important;
+  line-height: 1.65;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .cmdb-host-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-workloads-management
+) :is(.search-section, .search-box, .action-section, .table-section, .panel, .workbench-panel, .test-panel) {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 18px !important;
+  box-shadow: none !important;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .cmdb-host-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .k8s-config-management,
+  .k8s-network-management,
+  .k8s-storage-management,
+  .k8s-workloads-management
+) :is(.search-section, .search-box, .action-section, .table-section, .panel, .workbench-panel) {
+  padding: 18px 20px;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .ldap-settings-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management
+) :is(.summary-row, .summary-grid) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) :is(.summary-row > .el-col, .summary-grid > *) {
+  width: 100%;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) .summary-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 122px;
+  padding: 18px 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 10px;
+  align-content: space-between;
+  color: #fff;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) .summary-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 120px;
+  height: 120px;
+  transform: translate(-28%, -24%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 68%);
+  pointer-events: none;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) :is(.summary-label, .summary-desc) {
+  position: relative;
+  z-index: 1;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) .summary-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) .summary-value {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(28px, 2vw, 34px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .monitor-automation-page
+) .summary-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.ink {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.92)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.blue {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.98), rgba(20, 130, 255, 0.9)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.green {
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.98), rgba(16, 185, 129, 0.88)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.red {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.98), rgba(248, 113, 113, 0.88)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.teal {
+  background: linear-gradient(135deg, rgba(13, 148, 136, 0.98), rgba(45, 212, 191, 0.88)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.orange,
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.amber {
+  background: linear-gradient(135deg, rgba(217, 119, 6, 0.98), rgba(245, 158, 11, 0.88)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.slate {
+  background: linear-gradient(135deg, rgba(51, 65, 85, 0.98), rgba(100, 116, 139, 0.88)) !important;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card.wine {
+  background: linear-gradient(135deg, rgba(157, 23, 77, 0.98), rgba(190, 24, 93, 0.88)) !important;
+}
+
+#app :is(.alert-notify-page, .monitor-automation-page) :is(.content-grid, .workbench-grid) {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+}
+
+#app .alert-notify-page .content-grid {
+  grid-template-columns: 1fr;
+}
+
+#app .monitor-automation-page .workbench-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#app :is(.alert-notify-page, .monitor-automation-page) :is(.panel, .workbench-panel) {
+  display: grid;
+  gap: 16px;
+}
+
+#app .monitor-automation-page :is(.workbench-list, .workbench-item) {
+  display: grid;
+  gap: 12px;
+}
+
+#app .monitor-automation-page .workbench-item {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+#app .monitor-automation-page .workbench-item > div,
+#app .monitor-automation-page .workbench-item-summary,
+#app .monitor-automation-page .workbench-item-meta {
+  min-width: 0;
+}
+
+#app .monitor-automation-page .workbench-item-title {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+}
+
+#app .monitor-automation-page .workbench-item-summary {
+  color: var(--text-muted) !important;
+  line-height: 1.65;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+#app .monitor-automation-page .workbench-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--text-muted) !important;
+  justify-self: end;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .knowledge-table-page
+) :is(
+  .data-table,
+  .audit-table,
+  .agent-table,
+  .dblog-table,
+  .cluster-table,
+  .namespace-table,
+  .modern-table
+) {
+  border-radius: 18px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--border-subtle) !important;
+  background: rgba(2, 6, 23, 0.14) !important;
+  box-shadow: none !important;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .knowledge-table-page
+) :is(
+  .data-table,
+  .audit-table,
+  .agent-table,
+  .dblog-table,
+  .cluster-table,
+  .namespace-table,
+  .modern-table
+) :is(.el-table__header-wrapper table, .el-table__body-wrapper table) {
+  width: 100% !important;
+  table-layout: fixed !important;
+}
+
+#app :is(
+  .alert-notify-page,
+  .terminal-audit-page,
+  .agent-management,
+  .dblog-management,
+  .monitor-automation-page,
+  .quick-release-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management,
+  .knowledge-table-page
+) :is(
+  .data-table,
+  .audit-table,
+  .agent-table,
+  .dblog-table,
+  .cluster-table,
+  .namespace-table,
+  .modern-table
+) .cell {
+  min-width: 0;
+}
+
+#app :is(
+  .agent-management,
+  .dblog-management,
+  .quick-release-management,
+  .k8s-cluster-management,
+  .k8s-namespace-management
+) :is(.el-table__row:hover, .el-table__body tr:hover > td.el-table__cell) {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+#app :is(.cmdb-host-management, .cmdb-device-management, .quick-release-management, .k8s-cluster-management, .k8s-namespace-management, .monitor-automation-page) :is(
+  .node-text,
+  .cluster-name-container,
+  .namespace-name-container,
+  .services-cell,
+  .service-item,
+  .service-name,
+  .host-name-cell,
+  .device-name-cell,
+  .host-name-copy,
+  .host-name-copy__meta
+) {
+  min-width: 0;
+}
+
+#app .group-tree-section .node-text {
+  min-width: 0;
+  overflow: hidden;
+}
+
+#app .group-tree-section .node-label {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-secondary) !important;
+}
+
+#app .group-tree-section :is(.subtitle, .stats-label, .context-menu-item) {
+  color: var(--text-muted) !important;
+}
+
+#app :is(.cluster-name-link, .namespace-name-link, .service-name) {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#app .quick-release-management :is(.service-item, .table-cell-with-icon, .table-cell-with-icon span) {
+  min-width: 0;
+}
+
+#app .quick-release-management .table-cell-with-icon span {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#app :is(.alert-notify-page, .terminal-audit-page, .agent-management, .dblog-management, .ldap-settings-page) :is(.header-actions, .panel-actions, .detail-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 1200px) {
+  .platform-data-grid--three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ai-workspace,
+  .split-layout,
+  .monitor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #app :is(.alert-notify-page, .monitor-automation-page) :is(.content-grid, .workbench-grid) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  :root {
+    --page-gutter: 16px;
+    --overlay-viewport-gap: 16px;
+  }
+
+  .page-header,
+  .page-toolbar,
+  .section-card {
+    border-radius: 20px;
+  }
+
+  .page-header {
+    padding: 22px 20px;
+    flex-direction: column;
+  }
+
+  .page-actions,
+  .page-toolbar__actions {
+    justify-content: flex-start;
+  }
+
+  .page-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .platform-data-grid--two,
+  .platform-data-grid--three {
+    grid-template-columns: 1fr;
+  }
+
+  #app :is(
+    .alert-notify-page,
+    .terminal-audit-page,
+    .ldap-settings-page,
+    .agent-management,
+    .dblog-management,
+    .monitor-automation-page,
+    .quick-release-management
+  ) :is(.card-header, .header-row, .panel-header, .section-header, .test-panel) {
+    flex-wrap: wrap;
+  }
+
+  #app :is(
+    .alert-notify-page,
+    .terminal-audit-page,
+    .ldap-settings-page,
+    .agent-management,
+    .dblog-management,
+    .monitor-automation-page,
+    .quick-release-management
+  ) :is(.search-section, .search-box, .action-section, .table-section, .panel, .workbench-panel, .test-panel) {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-toolbar {
+    padding: 16px;
+  }
+
+  .stat-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-field {
+    min-width: 100%;
+  }
+
+  .el-dialog {
+    width: calc(100vw - 20px) !important;
+    max-width: 1000px;
+    margin-top: 4vh !important;
+  }
+
+  .el-dialog.ops-dialog,
+  .el-drawer.ops-drawer {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  #app :is(.alert-notify-page, .terminal-audit-page, .monitor-automation-page) .summary-card {
+    min-height: 110px;
+  }
+}

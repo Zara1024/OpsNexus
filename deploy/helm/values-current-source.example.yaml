@@ -1,0 +1,66 @@
+# Example override for deploying the current OpsNexus source build instead of
+# the historical default chart images declared in deploy/helm/opsnexus/values.yaml.
+#
+# Usage:
+#   cp deploy/helm/values-current-source.example.yaml values-current-source.yaml
+#   # edit repository/tag below
+#   helm upgrade --install opsnexus ./deploy/helm/opsnexus \
+#     -n opsnexus \
+#     --create-namespace \
+#     -f values-current-source.yaml
+
+web:
+  image:
+    repository: registry.example.com/opsnexus-web
+    tag: "20260408"
+    pullPolicy: IfNotPresent
+  service:
+    # Expose the current-source UI directly on the cluster node.
+    type: NodePort
+    nodePort: 30080
+
+api:
+  image:
+    repository: registry.example.com/opsnexus-api
+    tag: "20260408"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    nodePort: null
+  # Uncomment and fill these values when you want Helm deployment to enable
+  # the AI assistant / diagnosis features on a fresh machine.
+  #
+  # extraEnv:
+  #   - name: AI_ENABLED
+  #     value: "true"
+  #   - name: AI_PROVIDER
+  #     value: "openai"
+  #   - name: AI_BASE_URL
+  #     value: "https://api.openai.com/v1"
+  #   - name: AI_API_KEY
+  #     value: "sk-xxxx"
+  #   - name: AI_MODEL
+  #     value: "gpt-5.4"
+  #   - name: AI_REASONING_EFFORT
+  #     value: "high"
+  #   - name: AI_TIMEOUT_SECONDS
+  #     value: "60"
+
+# Optional examples when reusing external dependencies on a fresh machine:
+#
+# mysql:
+#   enabled: false
+#
+# redis:
+#   enabled: false
+#
+# externalServices:
+#   mysql:
+#     host: mysql.example.internal
+#     port: 3306
+#     database: devops
+#     username: root
+#     password: replace-me
+#   redis:
+#     address: redis.example.internal:6379
+#     password: replace-me

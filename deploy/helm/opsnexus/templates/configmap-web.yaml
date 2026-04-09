@@ -1,0 +1,53 @@
+{{- if .Values.web.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-nginx" (include "opsnexus.componentFullname" (dict "root" . "component" "web")) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "web") | nindent 4 }}
+data:
+  default.conf: |
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        '' close;
+    }
+
+    server {
+        listen 80;
+        server_name localhost;
+
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        client_max_body_size 0;
+
+        location ^~ /api/v1/upload {
+            proxy_pass http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "api") }}:{{ .Values.api.service.port }};
+            proxy_http_version 1.1;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+        }
+
+        location /api/ {
+            proxy_pass http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "api") }}:{{ .Values.api.service.port }};
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection $connection_upgrade;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_read_timeout 86400;
+        }
+
+        location / {
+            try_files $uri $uri/ /index.html;
+        }
+    }
+{{- end }}

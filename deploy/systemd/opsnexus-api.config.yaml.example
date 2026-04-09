@@ -1,0 +1,48 @@
+server:
+  address: 0.0.0.0:8000
+  model: release
+  enableSwagger: false
+
+db:
+  dialects: mysql
+  host: 127.0.0.1
+  port: 3306
+  db: autoops
+  username: root
+  password: ""
+  charset: utf8mb4
+  maxIdle: 50
+  maxOpen: 150
+
+redis:
+  address: 127.0.0.1:6379
+  password: ""
+
+imageSettings:
+  uploadDir: ./upload/
+  imageHost: ""
+
+log:
+  path: ./log
+  name: sys
+  model: console
+
+monitor:
+  prometheus:
+    url: "http://127.0.0.1:9090"
+  pushgateway:
+    url: "http://127.0.0.1:9091"
+  agent:
+    heartbeat_server_url: "http://127.0.0.1:8000/api/v1/monitor/agent/heartbeat"
+    heartbeat_token: ""
+  webhook:
+    token: ""
+
+ai:
+  enabled: false
+  provider: openai
+  baseUrl: https://api.openai.com/v1
+  apiKey: ""
+  model: gpt-5.4
+  reasoningEffort: medium
+  timeoutSeconds: 60

@@ -1,0 +1,11 @@
+{{- if .Values.api.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-assets" (include "opsnexus.componentFullname" (dict "root" . "component" "api")) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "api") | nindent 4 }}
+binaryData:
+  host.xlsx: {{ .Files.Get "files/api/host.xlsx" | b64enc }}
+{{- end }}
+

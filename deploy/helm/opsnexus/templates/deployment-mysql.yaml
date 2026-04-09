@@ -1,0 +1,125 @@
+{{- if .Values.mysql.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "opsnexus.componentFullname" (dict "root" . "component" "mysql") }}
+  labels:
+    {{- include "opsnexus.componentLabels" (dict "root" . "component" "mysql") | nindent 4 }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "mysql") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "opsnexus.componentSelectorLabels" (dict "root" . "component" "mysql") | nindent 8 }}
+        {{- with .Values.mysql.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-mysql.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret-mysql.yaml") . | sha256sum }}
+        {{- with .Values.mysql.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "opsnexus.serviceAccountName" . }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mysql.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: mysql
+          image: "{{ .Values.mysql.image.repository }}:{{ .Values.mysql.image.tag }}"
+          imagePullPolicy: {{ default .Values.global.defaultImagePullPolicy .Values.mysql.image.pullPolicy }}
+          {{- with .Values.mysql.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          args:
+            - --default-authentication-plugin=caching_sha2_password
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+          env:
+            - name: MYSQL_DATABASE
+              value: {{ .Values.mysql.auth.database | quote }}
+            - name: MYSQL_ROOT_HOST
+              value: "%"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "opsnexus.mysqlSecretName" . }}
+                  key: {{ .Values.mysql.auth.rootPasswordKey }}
+            - name: TZ
+              value: {{ .Values.global.timezone | quote }}
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - mysqladmin ping -h localhost -uroot -p"$MYSQL_ROOT_PASSWORD"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -ec
+                - mysqladmin ping -h localhost -uroot -p"$MYSQL_ROOT_PASSWORD"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            - name: mysql-files
+              mountPath: /docker-entrypoint-initdb.d/01-devops.sql
+              subPath: 01-devops.sql
+            - name: mysql-files
+              mountPath: /docker-entrypoint-initdb.d/02-init.sql
+              subPath: 02-init.sql
+            - name: mysql-files
+              mountPath: /etc/mysql/conf.d/my.cnf
+              subPath: my.cnf
+          {{- with .Values.mysql.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        - name: mysql-files
+          configMap:
+            name: {{ printf "%s-files" (include "opsnexus.componentFullname" (dict "root" . "component" "mysql")) | trunc 63 | trimSuffix "-" }}
+        - name: mysql-data
+          {{- if .Values.mysql.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ default (printf "%s-data" (include "opsnexus.componentFullname" (dict "root" . "component" "mysql")) | trunc 63 | trimSuffix "-") .Values.mysql.persistence.existingClaim }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+      {{- with .Values.mysql.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mysql.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.mysql.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

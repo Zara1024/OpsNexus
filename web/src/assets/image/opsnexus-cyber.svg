@@ -1,0 +1,36 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="opsnexus-bg" x1="18" y1="14" x2="78" y2="82" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38BDF8"/>
+      <stop offset="0.48" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="opsnexus-ring" x1="18" y1="18" x2="82" y2="78" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#67E8F9"/>
+      <stop offset="0.56" stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="opsnexus-core" x1="31" y1="27" x2="66" y2="68" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E0F2FE"/>
+      <stop offset="0.48" stop-color="#BAE6FD"/>
+      <stop offset="1" stop-color="#7DD3FC"/>
+    </linearGradient>
+    <filter id="opsnexus-glow" x="0" y="0" width="96" height="96" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="6" result="effect1_foregroundBlur"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#opsnexus-glow)">
+    <path d="M48 7L78.5 24.5V59.5L48 89L17.5 59.5V24.5L48 7Z" fill="url(#opsnexus-bg)" fill-opacity="0.88"/>
+    <path d="M48 13L73 27.5V56.5L48 81L23 56.5V27.5L48 13Z" stroke="url(#opsnexus-ring)" stroke-width="2.5"/>
+  </g>
+
+  <circle cx="48" cy="48" r="19" fill="#061120" fill-opacity="0.78" stroke="#67E8F9" stroke-opacity="0.46" stroke-width="1.5"/>
+  <path d="M31 63V33.5H39.5L58.5 56V33.5H65V63H56.8L37.5 40.1V63H31Z" fill="url(#opsnexus-core)"/>
+  <path d="M20.5 22.5L31.5 29" stroke="#BAE6FD" stroke-opacity="0.54" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M75.5 22.5L64 29" stroke="#BAE6FD" stroke-opacity="0.54" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M20.5 61.5L31.5 55" stroke="#BAE6FD" stroke-opacity="0.54" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M75.5 61.5L64 55" stroke="#BAE6FD" stroke-opacity="0.54" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

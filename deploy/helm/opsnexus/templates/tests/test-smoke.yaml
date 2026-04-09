@@ -1,0 +1,32 @@
+{{- if and .Values.tests.enabled .Values.api.enabled .Values.web.enabled }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ printf "%s-smoke" (include "opsnexus.fullname" .) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "opsnexus.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  restartPolicy: Never
+  containers:
+    - name: smoke
+      image: "{{ .Values.tests.image.repository }}:{{ .Values.tests.image.tag }}"
+      imagePullPolicy: {{ .Values.tests.image.pullPolicy }}
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          wget --quiet --spider http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "web") }}:{{ .Values.web.service.port }}
+          wget --quiet --spider http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "api") }}:{{ .Values.api.service.port }}/api/v1/captcha
+          {{- if .Values.prometheus.enabled }}
+          wget --quiet --spider http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "prometheus") }}:{{ .Values.prometheus.service.port }}/-/ready
+          {{- end }}
+          {{- if .Values.pushgateway.enabled }}
+          wget --quiet --spider http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "pushgateway") }}:{{ .Values.pushgateway.service.port }}/-/healthy
+          {{- end }}
+          {{- if .Values.alertmanager.enabled }}
+          wget --quiet --spider http://{{ include "opsnexus.componentFullname" (dict "root" . "component" "alertmanager") }}:{{ .Values.alertmanager.service.port }}/-/healthy
+          {{- end }}
+{{- end }}

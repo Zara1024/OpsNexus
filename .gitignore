@@ -1,0 +1,35 @@
+# Build artifacts
+api/opsnexus-api-linux-amd64
+api/opsnexus-api-release-gov-linux-amd64
+api/opsnexus-api-*-linux-amd64
+api/--
+web/dist/
+web/dist-upload.zip
+web/node_modules/
+web-dist.tar.gz
+
+# Local runtime / audit artifacts
+tmp/
+web/serve.out
+.claude/
+.superpowers/
+api/logs/
+docker/mysql/data/
+docker/redis/data/
+docker/prometheus/data/
+docker/pushgateway/data/
+docker/alertmanager/data/
+api/sql/autoops.sql
+k8s/mysql/mysql-cm1-configmap.yaml
+
+# Environment and secret files
+*.env.local
+*.env.secrets
+deploy/systemd/opsnexus-api.env
+deploy/systemd/opsnexus-api.config.yaml
+docker/api/ssh_keys/*
+!docker/api/ssh_keys/README.md
+
+# OS / editor noise
+.DS_Store
+Thumbs.db

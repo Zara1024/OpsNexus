@@ -1,0 +1,356 @@
+﻿OpsNexus 2026-03-20 文档状态同步（含 2026-03-21 P2 收口补充）
+
+一、结论
+1. P0 已完成，并已在 10.0.0.200 完成真实验收。
+2. P1 已完成并收尾，不再属于“规划中”或“仅有页面占位”阶段。
+3. README、旧改造提示词中部分状态已滞后，当前以本文件、README 和代码实现为准。
+
+二、P0 已完成项
+1. kubectl apply
+2. Pod WebSocket terminal
+3. kubectl WebSocket terminal
+4. Deployment 基础 CRUD、扩缩容、重启
+5. StatefulSet 基础 CRUD、扩缩容、重启
+6. DaemonSet 基础 CRUD、重启
+7. Job 基础 CRUD
+8. CronJob 基础 CRUD
+9. 集群节点信息获取
+
+三、P1 已完成项
+1. K8s 监控中心补强
+2. AlertManager / 告警中心 / 告警推送闭环
+3. 全局搜索
+4. 终端审计与命令审计闭环
+5. LDAP 与权限补强
+
+四、本轮真实验收环境
+1. 主机：10.0.0.200
+2. Web 入口：http://10.0.0.200:18080
+3. P0/P1 API 反代到 18000
+
+五、P1 验收摘要
+1. 告警中心
+   - AlertManager source/status/receiver/silence 已联通
+   - webhook 入库与 notify log 已验证
+2. 终端审计
+   - pod terminal / kubectl terminal 已写入 sys_session_recording
+   - sys_command_audit 已记录命令
+   - 录制文件下载成功
+3. 全局搜索
+   - /search/global 页面与接口可用
+   - 已具备用户/菜单/告警等跨资源搜索
+4. LDAP
+   - LDAP 测试成功
+   - LDAP 用户可登录
+   - LDAP 组可映射平台角色
+5. K8s 监控
+   - 集群详情监控可用
+   - 节点 metrics 可用
+   - 命名空间 metrics 可用
+
+六、部署状态
+1. Docker：已补齐 AlertManager 可选 profile 和 MONITOR_* 配置覆盖
+2. Kubernetes：已补齐 alertmanager manifests 与 Prometheus 联动配置
+3. Helm：已补齐完整 chart，路径为 `deploy/helm/opsnexus`
+   - 已覆盖 api / web / mysql / redis / pushgateway / prometheus / alertmanager（可选）
+   - 已支持 Ingress / ServiceAccount / PVC / `helm test`
+   - `2026-03-20` 已在 `10.0.0.200` Kubernetes 环境的 `opsnexus-helm-test` namespace 完成：
+     - `helm lint`
+     - `helm template`
+     - `helm upgrade --install`
+     - `helm test`
+
+七、说明
+1. 如果旧 README、旧提示词与当前状态冲突，以代码和本文件为准。
+2. 后续进入 P2 时，应以本文件为新的阶段起点。
+
+八、2026-03-20 当晚补充
+1. Kubernetes HPA 自动扩缩容治理已完成第一阶段闭环：
+   - 新增通用接口：
+     - `GET /api/v1/k8s/cluster/:id/namespaces/:namespaceName/workloads/:type/:workloadName/autoscaling`
+     - `PUT /api/v1/k8s/cluster/:id/namespaces/:namespaceName/workloads/:type/:workloadName/autoscaling`
+     - `DELETE /api/v1/k8s/cluster/:id/namespaces/:namespaceName/workloads/:type/:workloadName/autoscaling`
+   - 工作负载列表与详情已返回 `autoscaling` 摘要
+   - K8s 工作负载页面已增加 HPA 状态列、治理按钮与配置弹窗
+   - 手动扩缩容接口已增加 `autoscalingManaged` 与 `warning` 提示，避免误以为手工副本会长期保持
+2. `10.0.0.200` 真实环境已使用：
+   - 集群：`p0-acceptance-k3s`
+   - 命名空间：`opsnexus-apply-e2e`
+   - 工作负载：`demo-nginx`
+   完成 HPA 创建、查询、更新、手动伸缩 warning 验证、删除收尾。
+3. 该项仍属于长期项“开发中”，后续可继续深化：
+   - KEDA / VPA / 策略推荐
+   - 告警联动与容量建议
+   - 发布前后自动扩缩容治理策略
+4. 当晚继续补强：
+   - HPA 配置弹窗已补扩容/缩容 `selectPolicy`、`Pods/Percent` 限速策略配置
+   - `10.0.0.200` 已补做 `StatefulSet` 真实验收：
+     - 命名空间：`opsnexus-apply-e2e-2`
+     - 工作负载：`opsnexus-sts-update-e2e`
+     - 已验证自定义策略创建、查询、详情回显、手动伸缩 warning、删除收尾
+5. 当晚继续补强（二）：
+   - HPA 治理提示已从前端本地提示下沉到后端统一返回，列表/详情/单对象查询/创建更新接口均可见 `warnings`
+   - 已验证以下真实风险提示会正确返回：
+     - `Utilization` 但工作负载缺少对应 `requests`
+     - `scaleUp.selectPolicy=Disabled`
+     - `minReplicas == maxReplicas`
+   - 真实验收对象：
+     - 命名空间：`opsnexus-apply-e2e`
+     - 工作负载：`demo-nginx`
+     - 已完成创建、查询、列表回显、详情回显、删除收尾
+6. 当晚继续补强（三）：
+   - 手动伸缩接口也已补 `warnings` 返回，避免 API 调用方只能看到单条 `warning` 文本
+   - 现网已验证：
+     - `POST /api/v1/k8s/cluster/34/namespaces/opsnexus-apply-e2e/deployments/demo-nginx/scale`
+     - 在 HPA 存在且存在治理风险时，会同时返回：
+       - `autoscalingManaged=true`
+       - `warning`
+       - `warnings`
+7. 当晚继续补强（四）：
+   - HPA 已接入“容量建议”联动：
+     - 新增接口：
+       - `GET /api/v1/k8s/cluster/:id/namespaces/:namespaceName/workloads/:type/:workloadName/capacity-suggestion`
+     - 返回内容已包含：
+       - `prediction_suggestion` 模板渲染结果
+       - fallback 容量建议报告
+       - HPA 摘要
+       - 关联告警摘要
+       - 建议动作 / 建议策略 / 持续观察指标 / 复查窗口
+       - `alertCenterPath`
+   - K8s 工作负载页面已增加“容量建议”按钮与报告弹窗
+   - `10.0.0.200` 已完成真实验收：
+     - `opsnexus-apply-e2e/demo-nginx`
+     - `opsnexus-apply-e2e-2/opsnexus-sts-update-e2e`
+     - 已验证无 HPA / 有 HPA 两种容量建议返回
+8. 当晚继续补强（五）：
+   - HPA 容量建议已补齐“告警中心 query 自动联动 + 容量建议落库/历史”：
+     - 当前建议接口返回已补：
+       - `historyId`
+       - `generatedAt`
+       - `generatedBy`
+       - `alertCenterQuery`
+       - 完整带 query 的 `alertCenterPath`
+     - 新增历史接口：
+       - `GET /api/v1/k8s/cluster/:id/namespaces/:namespaceName/workloads/:type/:workloadName/capacity-suggestion/history`
+   - 告警中心页面已支持从路由 query 自动回填：
+     - `keyword`
+     - `namespace`
+     - `workloadName`
+   - K8s 工作负载“容量建议”弹窗已补历史快照列表，可直接查看历史记录并再次打开告警中心。
+   - `10.0.0.200` 已完成真实验收：
+     - `GET /api/v1/k8s/cluster/34/namespaces/opsnexus-apply-e2e/workloads/deployment/demo-nginx/capacity-suggestion`
+     - `GET /api/v1/k8s/cluster/34/namespaces/opsnexus-apply-e2e/workloads/deployment/demo-nginx/capacity-suggestion/history`
+     - `GET /api/v1/k8s/cluster/34/namespaces/opsnexus-apply-e2e-2/workloads/statefulset/opsnexus-sts-update-e2e/capacity-suggestion`
+     - `GET /api/v1/monitor/alerts/incidents?pageNum=1&pageSize=10&keyword=demo-nginx&namespace=opsnexus-apply-e2e&workloadName=demo-nginx`
+   - 现网数据库已新增并写入：
+     - `k8s_workload_capacity_suggestion_history`
+9. 当晚继续补强（六）：
+   - HPA 容量建议已与 AI 诊断页打通：
+     - AI 诊断新增场景：
+       - `workload_capacity`
+     - K8s 工作负载“容量建议”弹窗已新增“AI 诊断”入口：
+       - 当前快照可直接打开 AI 诊断
+       - 历史快照也可直接打开 AI 诊断
+     - AI 诊断页已支持从路由 query 自动回填并自动执行：
+       - `scene`
+       - `targetId`
+       - `keyword`
+       - `templateName`
+       - `source`
+       - `namespace`
+       - `workloadName`
+     - AI 诊断页已改为调用真实接口：
+       - `POST /api/v1/ai/diagnose`
+   - `10.0.0.200` 已完成真实验收：
+     - `POST /api/v1/ai/diagnose`
+       - `scene=workload_capacity,targetId=1,templateName=incident_analysis`
+       - `scene=workload_capacity,targetId=2,templateName=k8s_event_analysis`
+     - `GET /api/v1/ai/history`
+     - `GET /api/v1/ai/history/20260320212233-072446`
+   - 已验证：
+     - `workload_capacity` 场景可基于容量建议历史快照生成 AI 诊断报告
+     - AI 历史会写入 `ai_agent_chat_history`
+     - 前端静态资源已包含 `workload_capacity` 与 `/ai/diagnosis` 跳转代码
+10. 当晚继续补强（七）：
+   - HPA 已与应用环境 / 快速发布做第一阶段“发布前治理联动”：
+     - 复用现有 `app_jenkins_env.deploy_config`，已接入：
+       - `cluster_id`
+       - `namespace`
+       - `workload_type`
+       - `workload_name`
+       - `release_governance_enabled`
+       - `pre_check_mode`
+     - 环境查询与服务树返回已补：
+       - `deploy_config`
+       - `release_governance`
+       - `latest_capacity_suggestion`
+       - `alert_center_path`
+       - `ai_diagnosis_path`
+       - `k8s_workload_path`
+     - 快速发布创建 / 详情 / 列表任务已补：
+       - `release_governance`
+     - 当前已支持：
+       - 应用详情查看环境治理目标与治理状态
+       - 快速发布选环境时自动提示治理风险
+       - 若后续配置 `pre_check_mode=strict`，后端会在创建发布计划时执行治理拦截
+   - `10.0.0.200` 已完成真实验收：
+     - 新建 acceptance 应用：
+       - `app_id=22`
+       - `code=opsnexus-hpa-gov-e2e`
+     - 环境映射：
+     - `app_jenkins_env.id=60`
+     - `cluster_id=34`
+     - `namespace=opsnexus-apply-e2e`
+     - `workload_type=deployment`
+     - `workload_name=demo-nginx`
+      - `release_governance_enabled=true`
+      - `pre_check_mode=observe`
+     - 已验证接口：
+       - `GET /api/v1/apps/22`
+       - `GET /api/v1/apps/22/jenkins-envs`
+       - `GET /api/v1/apps/environment?app_id=22&environment=test`
+       - `GET /api/v1/apps/service-tree?business_group_ids[]=44`
+       - `POST /api/v1/apps/deployment/quick`
+       - `GET /api/v1/apps/deployment/82`
+       - `GET /api/v1/apps/deployment/list?page=1&pageSize=10&title=HPA release governance e2e`
+   - 已验证：
+     - `release_governance` 可关联现有容量建议快照 `history_id=1`
+     - 快速发布任务返回中可见治理摘要与三类联动路径
+     - K8s 工作负载页已支持通过 query 预设打开容量建议弹窗
+   - 当晚继续补测：
+     - 已将 `app_jenkins_env.id=60` 更新为 `pre_check_mode=strict`
+     - `GET /api/v1/apps/environment?app_id=22&environment=test` 返回：
+       - `pre_check_mode=strict`
+       - `blocking=false`
+     - `POST /api/v1/apps/deployment/quick`
+       - `title=HPA release governance strict e2e`
+       - 返回创建成功，说明严格模式在“已有真实快照且风险非 high”时可正常放行
+
+九、2026-03-21 P2 收口补充
+1. 当前事实源更新：
+   - 本文件、`README.md`、当前仓库代码与本地验证结果共同构成当前事实。
+   - 仓库外历史提示词仅保留背景价值，不再作为状态判定依据。
+2. 当前环境漂移复核与修复（`10.0.0.200`）：
+   - `2026-03-21` 先复核到 `10.0.0.200:18080` 不通、`10.0.0.200:18000` 不通。
+   - `http://10.0.0.200:8080/` 持续返回 `200`。
+   - 同日首次复核时 `http://10.0.0.200:8080/api/v1/captcha` 返回 `502 Bad Gateway`，定位为 nginx 到 `127.0.0.1:8000` 的 upstream 不通。
+   - 已在宿主机恢复 `opsnexus-mysql` / `opsnexus-redis`，并将 `opsnexus-api` 交由 systemd 接管；示例 unit 已落库到 `deploy/systemd/opsnexus-api.service`。
+   - 修复后 `http://10.0.0.200:8080/api/v1/captcha` 已恢复返回 `200`。
+   - 同日继续复核发现远端仍挂着旧的前后端构建，`cmdb/db` 页面会因为旧 JS 与旧 API 能力不一致出现 `404`。
+   - 已重新将当前仓库构建产物部署到宿主机：
+     - 前端：`web/dist` -> `/opt/opsnexus-remote-test/web-dist`
+     - 后端：`api/opsnexus-api-linux-amd64` -> `/opt/opsnexus-remote-test/opsnexus-api-linux-amd64`
+     - 服务：`systemctl restart opsnexus-api.service`
+   - 同日继续修复 `ops/tools` 页面服务模板依赖：
+     - 后端 `api/api/tool/service/serviceDeploy.go` 已补齐 `common/templates` 多位置解析
+     - 宿主机已同步 `api/common/templates` -> `/opt/opsnexus-remote-test/common/templates`
+     - `ops/tools` 对应接口不再依赖 systemd `WorkingDirectory` 才能正常读取模板
+   - 重新部署后，首页静态资源 hash 已切换为：
+     - `/static/js/chunk-vendors.bc3edb71.js`
+     - `/static/js/app.82ad5a9d.js`
+   - 同日继续复核又发现远端数据库存在菜单 / 角色绑定漂移：
+     - `admin` 登录后的 `leftMenuList` 未暴露 `SQL工单`、`工单中心`、`终端录像审计`、`知识库`、`AI 诊断` 等已完成能力入口。
+     - 问题不是功能未实现，而是 `sys_menu` / `sys_role_menu` 与当前代码路由不一致。
+   - 已补齐并重新同步远端菜单：
+     - `cmdb/sql-work-orders`
+     - `work/orders`
+     - `work/apply`
+     - `monitor/recording`
+     - `knowledge/base`
+     - `ai/diagnosis`
+     - `config/ldap`
+     - `k8s/monitoring`
+     - `search/global`
+     - `monitor/https`
+     - `task/config`
+   - 同步重新构建并部署前端后，首页静态资源 hash 已进一步更新为：
+     - `/static/js/app.2e63bd67.js`
+   - 结论：历史“已验收”记录继续有效；当前远端验收链路已恢复，但有效入口已经收敛为 `8080`，不再以旧的 `18080/18000` 作为准入基线。
+3. 本轮 P2 收口范围已经形成统一闭环，而非新增平行系统：
+   - Kubernetes 深度治理：
+     - 新增统一治理总览接口：
+       - `GET /api/v1/k8s/cluster/:id/namespaces/:namespaceName/workloads/:type/:workloadName/governance-overview`
+     - 在现有 HPA / 容量建议基础上统一输出：
+       - `riskLevel`
+       - `blocking`
+       - `blockingReason`
+       - `blockingRules`
+       - `warningRules`
+       - `stages`
+       - `watchMetrics`
+       - `relatedApplications`
+       - `extensions`（KEDA / VPA 预留扩展位）
+     - 前端工作负载页已形成“治理工作台”入口，可从单一弹窗继续联动到 HPA、容量建议、告警中心、AI 诊断、应用治理。
+   - 应用管理统一治理入口：
+     - `/app/application` 已支持通过 `appId + env + focus=governance` 直达目标应用环境治理场景。
+     - 应用详情中的环境治理摘要、发布治理、K8s 工作负载入口、容量建议入口已统一表达。
+   - 监控中心深化：
+     - `/monitor/https` 已补齐统一工作台概览、风险提示、推荐动作、最近事件、最近动作。
+     - 主机告警、数据库告警、SSL 自动化与通知机器人统计、通知失败统计已形成同一工作台。
+   - 集成生态深化：
+     - 飞书 / 钉钉 / 企业微信 / 邮件机器人继续复用既有配置、测试发送、启停、错误日志、通知记录能力。
+     - 本轮主要补齐与监控工作台、告警中心的复用联动，不重复建设独立通知系统。
+   - 平台治理深化：
+     - 运维工单中心已并入 SQL 工单聚合视图，统一展示风险等级、AI 诊断入口、知识库入口。
+     - 知识库新增 `inspection` 类型。
+     - AI 诊断新增 `inspection_report` 场景，可直接消费巡检类知识文章作为诊断输入。
+4. 本轮本地验证结果：
+   - 后端：
+     - 在 `api` 目录执行 `go test ./...`，结果通过。
+   - 前端：
+     - 在 `web` 目录执行 `npm run build`，结果通过。
+     - 当前构建告警已清零；`web/vue.config.js` 已将开发代理默认目标收敛到 `http://10.0.0.200:8080`，也支持通过 `VUE_APP_API_PROXY_TARGET` 覆盖。
+     - 已补齐的前端兼容性收口：
+       - 发布详情页已统一兼容 snake_case / camelCase 治理字段与联动路径。
+     - 已清理的历史前端告警：
+       - `@element-plus/icons-vue` 无效图标导入
+       - `element-plus` `Message` 导出告警
+       - `:deep` / `/deep/` 旧写法提示
+   - 远端：
+     - `http://10.0.0.200:8080/` 返回 `200`。
+     - `http://10.0.0.200:8080/api/v1/captcha` 返回 `200`。
+     - `systemctl status opsnexus-api.service` 为 `active (running)`。
+     - 以真实登录 token 复核通过：
+       - `GET /api/v1/cmdb/databaselist?page=1&pageSize=10`
+       - `GET /api/v1/config/accountauth/list?page=1&pageSize=100`
+       - `GET /api/v1/cmdb/sql/work-orders/summary`
+       - `GET /api/v1/work-orders/summary`
+       - `GET /api/v1/terminalAudit/summary`
+       - `GET /api/v1/knowledge/articles?page=1&pageSize=10`
+       - `GET /api/v1/ai/templates`
+     - 以真实登录返回的 `leftMenuList` 复核通过：
+       - `cmdb/sql-work-orders`
+       - `work/orders`
+       - `work/apply`
+       - `monitor/recording`
+       - `knowledge/base`
+       - `ai/diagnosis`
+       - `config/ldap`
+       - `k8s/monitoring`
+       - `search/global`
+       - `monitor/https`
+       - `task/config`
+       - `GET /api/v1/cmdb/grouplist`
+       - `GET /api/v1/cmdb/sql/work-orders/summary`
+       - `GET /api/v1/tool/services`
+       - `GET /api/v1/tool/services/mysql`
+     - 上述接口均返回 `200`，远端 `cmdb/db` 与 `ops/tools` 所依赖的数据 / 模板链路已与当前代码重新对齐。
+5. 本轮明确保留到后续阶段 / 长周期规划的内容：
+   - Kubernetes：
+     - KEDA / VPA 真执行闭环
+     - 自动扩缩容策略自动下发
+   - 服务管理：
+     - 更细粒度的发布编排
+     - 多集群批量治理
+   - 监控 / 自动化：
+     - 更深层自动化处置与回写闭环
+   - CMDB / 资产：
+     - Windows 主机管理
+     - Guacamole 远程桌面
+     - 交换机配置管理
+   - 平台治理：
+     - 独立巡检计划编排
+     - 更多 AI Agent 治理场景
+6. 收口结论：
+   - P2 不再处于“仅一期能力散点存在”的状态，而是已收口为可交付、可验证、可继续演进的统一治理版本。
+   - 本轮文档、代码、本地构建结果与远端 `10.0.0.200` 当前部署状态已同步；`cmdb/db` 页面因旧构建引起的 `404` 漂移已完成收口。

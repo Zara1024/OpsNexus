@@ -1,0 +1,315 @@
+nameOverride: ""
+fullnameOverride: ""
+
+global:
+  imagePullSecrets: []
+  storageClass: ""
+  timezone: Asia/Shanghai
+  extraLabels: {}
+  extraAnnotations: {}
+  defaultImagePullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+externalServices:
+  mysql:
+    host: ""
+    port: 3306
+    database: devops
+    username: root
+    password: ""
+    existingSecret: ""
+    passwordKey: root-password
+  redis:
+    address: ""
+    password: ""
+    existingSecret: ""
+    passwordKey: redis-password
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: opsnexus.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+api:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-api
+    tag: v1.0
+    pullPolicy: ""
+  initContainer:
+    image:
+      repository: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/registry.k8s.io/e2e-test-images/busybox
+      tag: 1.29-4
+      pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+    nodePort: null
+  config:
+    serverAddress: 0.0.0.0:8000
+    model: debug
+    enableSwagger: false
+    imageHost: ""
+    uploadDir: ./upload/
+    logPath: ./log
+    logName: sys
+    logModel: console
+    dbCharset: utf8
+    dbMaxIdle: 50
+    dbMaxOpen: 150
+  monitor:
+    prometheusURL: ""
+    pushgatewayURL: ""
+    agentHeartbeatServerURL: ""
+    agentHeartbeatToken: ""
+    webhookToken: ""
+  existingSecret: ""
+  existingSecretKeys:
+    agentHeartbeatToken: agent-heartbeat-token
+    webhookToken: webhook-token
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
+  sshKeysSecret:
+    name: ""
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  extraEnv: []
+  startupProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 18
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    timeoutSeconds: 2
+    failureThreshold: 6
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 6
+
+web:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/deviops-web
+    tag: v1.0
+    pullPolicy: ""
+  service:
+    type: ClusterIP
+    port: 80
+    nodePort: null
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  livenessProbe:
+    enabled: true
+    path: /
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 5
+  readinessProbe:
+    enabled: true
+    path: /
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 5
+
+mysql:
+  enabled: true
+  image:
+    repository: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/mysql
+    tag: 8.0.33
+    pullPolicy: ""
+  service:
+    type: ClusterIP
+    port: 3306
+  auth:
+    database: devops
+    username: root
+    rootPassword: ""
+    existingSecret: ""
+    rootPasswordKey: root-password
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+
+redis:
+  enabled: true
+  image:
+    repository: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/redis
+    tag: 7.0-alpine
+    pullPolicy: ""
+  service:
+    type: ClusterIP
+    port: 6379
+  auth:
+    password: ""
+    existingSecret: ""
+    passwordKey: redis-password
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 4Gi
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+
+pushgateway:
+  enabled: true
+  image:
+    repository: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/pushgateway
+    tag: v1.9.0
+    pullPolicy: ""
+  service:
+    type: ClusterIP
+    port: 9091
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+    file: /pushgateway/metrics
+    interval: 5m
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+
+prometheus:
+  enabled: true
+  image:
+    repository: crpi-aj3vgoxp9kzh2jx4.cn-hangzhou.personal.cr.aliyuncs.com/zhangfan_k8s/prometheus
+    tag: v2.47.0
+    pullPolicy: ""
+  service:
+    type: ClusterIP
+    port: 9090
+  global:
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+  retention: 15d
+  alerting:
+    enabled: false
+    target: ""
+  extraScrapeConfigs: []
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext:
+    fsGroup: 2000
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+
+alertmanager:
+  enabled: false
+  image:
+    repository: quay.io/prometheus/alertmanager
+    tag: v0.27.0
+    pullPolicy: ""
+  service:
+    type: ClusterIP
+    port: 9093
+  existingConfigSecret: ""
+  config:
+    resolveTimeout: 5m
+    receiverName: opsnexus-default
+    groupBy:
+      - alertname
+      - cluster
+      - namespace
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 4h
+  persistence:
+    enabled: true
+    existingClaim: ""
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: 2Gi
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+
+tests:
+  enabled: true
+  image:
+    repository: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/registry.k8s.io/e2e-test-images/busybox
+    tag: 1.29-4
+    pullPolicy: IfNotPresent

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-cm0
+  labels:
+    app: alertmanager
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 5m
+
+    route:
+      receiver: opsnexus-default
+      group_by:
+        - alertname
+        - cluster
+        - namespace
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+
+    receivers:
+      - name: opsnexus-default
+        webhook_configs:
+          - url: http://devops-api:8000/api/v1/monitor/alerts/webhook?token=webhook-notify-token-2024
+            send_resolved: true
+
+    templates: []
