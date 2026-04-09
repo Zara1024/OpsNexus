@@ -33,3 +33,5 @@ docker/api/ssh_keys/*
 # OS / editor noise
 .DS_Store
 Thumbs.db
+.idea/
+logs/
