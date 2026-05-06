@@ -14,7 +14,7 @@ route:
 receivers:
   - name: opsnexus-default
     webhook_configs:
-      - url: http://devops-api:8000/api/v1/monitor/alerts/webhook?token=webhook-notify-token-2024
+      - url: http://devops-api:8000/api/v1/monitor/alerts/webhook?token=__MONITOR_WEBHOOK_TOKEN__
         send_resolved: true
 
 templates: []

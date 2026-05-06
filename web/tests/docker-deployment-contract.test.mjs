@@ -2,9 +2,11 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 
 const composeSource = fs.readFileSync(new URL('../../docker/docker-compose.yml', import.meta.url), 'utf8')
+const envExampleSource = fs.readFileSync(new URL('../../docker/.env.example', import.meta.url), 'utf8')
 const apiDockerfileSource = fs.readFileSync(new URL('../../docker/api/Dockerfile', import.meta.url), 'utf8')
 const webDockerfileSource = fs.readFileSync(new URL('../../docker/web/Dockerfile', import.meta.url), 'utf8')
 const mysqlInitSource = fs.readFileSync(new URL('../../docker/mysql/init.sql', import.meta.url), 'utf8')
+const readmeSource = fs.readFileSync(new URL('../../README.md', import.meta.url), 'utf8')
 
 function testComposeBuildsApiAndWebFromRepoSource() {
   assert.match(
@@ -33,6 +35,27 @@ function testComposeAllowsRemoteRootConnectionsWithoutPasswordDrift() {
   )
 }
 
+function testComposeRequiresProductionSecretsFromEnvFile() {
+  for (const key of [
+    'MYSQL_ROOT_PASSWORD',
+    'DB_PASSWORD',
+    'REDIS_PASSWORD',
+    'MONITOR_AGENT_HEARTBEAT_TOKEN',
+    'MONITOR_WEBHOOK_TOKEN'
+  ]) {
+    assert.match(
+      composeSource,
+      new RegExp(`\\$\\{${key}:\\?set ${key} in docker/\\.env\\}`),
+      `expected docker compose to require ${key} from docker/.env`
+    )
+  }
+
+  assert.ok(
+    !composeSource.includes('CHANGE_ME') && !envExampleSource.includes('CHANGE_ME'),
+    'expected docker deployment files to avoid CHANGE_ME as a pseudo-secret'
+  )
+}
+
 function testApiDockerImageIncludesSourceBuildAndTemplates() {
   assert.match(
     apiDockerfileSource,
@@ -50,6 +73,12 @@ function testApiDockerImageIncludesSourceBuildAndTemplates() {
     apiDockerfileSource,
     /COPY --from=.*\/src\/api\/common\/templates .*\/app\/common\/templates/s,
     'expected api Dockerfile to copy common templates into the runtime image'
+  )
+
+  assert.match(
+    apiDockerfileSource,
+    /COPY --from=.*\/src\/api\/upload\/xlsl\/host\.xlsx .*\/app\/upload\/xlsl\/host\.xlsx/s,
+    'expected api Dockerfile to include the CMDB host import template'
   )
 }
 
@@ -76,17 +105,32 @@ function testWebDockerImageBuildsDistFromSource() {
 function testWebHealthcheckUsesIpv4Loopback() {
   assert.match(
     composeSource,
-    /devops-web:[\s\S]*healthcheck:[\s\S]*http:\/\/127\.0\.0\.1:80/s,
-    'expected devops-web healthcheck to probe 127.0.0.1:80 for reliable loopback checks'
+    /devops-web:[\s\S]*healthcheck:[\s\S]*http:\/\/127\.0\.0\.1\/healthz/s,
+    'expected devops-web healthcheck to probe 127.0.0.1/healthz for reliable loopback checks'
+  )
+}
+
+function testReadmeIsDockerOnlyForProductionDeployment() {
+  assert.match(
+    readmeSource,
+    /仅支持 Docker Compose 部署/,
+    'expected README to declare Docker Compose as the only production deployment mode'
+  )
+
+  assert.ok(
+    !readmeSource.match(/deploy\/helm|deploy\/systemd|helm upgrade|kubectl apply/),
+    'expected README to avoid old Helm, systemd, and raw Kubernetes deployment instructions'
   )
 }
 
 async function main() {
   testComposeBuildsApiAndWebFromRepoSource()
   testComposeAllowsRemoteRootConnectionsWithoutPasswordDrift()
+  testComposeRequiresProductionSecretsFromEnvFile()
   testApiDockerImageIncludesSourceBuildAndTemplates()
   testWebDockerImageBuildsDistFromSource()
   testWebHealthcheckUsesIpv4Loopback()
+  testReadmeIsDockerOnlyForProductionDeployment()
   console.log('docker deployment contract tests passed')
 }
 

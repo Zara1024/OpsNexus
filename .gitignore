@@ -7,6 +7,9 @@ web/dist/
 web/dist-upload.zip
 web/node_modules/
 web-dist.tar.gz
+web/web-dist.tar.gz
+web/*.log
+web/serve.err
 
 # Local runtime / audit artifacts
 tmp/
@@ -14,19 +17,21 @@ web/serve.out
 .claude/
 .superpowers/
 api/logs/
+scripts/__pycache__/
+docker/api/logs/
+docker/api/upload/
 docker/mysql/data/
 docker/redis/data/
 docker/prometheus/data/
 docker/pushgateway/data/
 docker/alertmanager/data/
 api/sql/autoops.sql
-k8s/mysql/mysql-cm1-configmap.yaml
 
 # Environment and secret files
+.env
+docker/.env
 *.env.local
 *.env.secrets
-deploy/systemd/opsnexus-api.env
-deploy/systemd/opsnexus-api.config.yaml
 docker/api/ssh_keys/*
 !docker/api/ssh_keys/README.md
 

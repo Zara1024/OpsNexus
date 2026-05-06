@@ -32,10 +32,11 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN mkdir -p /app/log /app/upload /app/docs /app/common/templates
+RUN mkdir -p /app/log /app/upload/xlsl /app/docs /app/common/templates
 
 COPY --from=builder /out/devops /app/devops
 COPY --from=builder /src/api/common/templates /app/common/templates
+COPY --from=builder /src/api/upload/xlsl/host.xlsx /app/upload/xlsl/host.xlsx
 
 RUN chmod +x /app/devops
 
